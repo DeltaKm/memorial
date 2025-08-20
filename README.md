@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Memorial - Next.js Full-Stack Application
 
-## Getting Started
+Memorial è un'applicazione full-stack Next.js per la gestione di un database di persone defunte storiche. Migrata da React CRA + FastAPI Python backend.
 
-First, run the development server:
+## Funzionalità
 
+- ✅ **CRUD completo** per persone defunte
+- ✅ **Ricerca avanzata** con filtri multipli
+- ✅ **Paginazione** dei risultati
+- ✅ **Statistiche** del database
+- ✅ **Import Excel** per caricamento dati in massa
+- ✅ **UI moderna** con Tailwind CSS e Radix UI
+- ✅ **Database MongoDB Atlas**
+- ✅ **TypeScript** per type safety
+
+## Tecnologie Utilizzate
+
+- **Frontend**: Next.js 15, React, TypeScript, Tailwind CSS
+- **UI Components**: Radix UI, Lucide Icons
+- **Backend**: Next.js API Routes (serverless)
+- **Database**: MongoDB Atlas
+- **Deployment**: Vercel
+
+## Setup Locale
+
+1. **Clona il repository**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd memorial-nextjs
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Installa le dipendenze**
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Configura le variabili d'ambiente**
+```bash
+cp env.example .env.local
+```
+Modifica `.env.local` con la tua stringa di connessione MongoDB Atlas:
+```
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database_name?retryWrites=true&w=majority
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. **Avvia il server di sviluppo**
+```bash
+npm run dev
+```
 
-## Learn More
+Apri [http://localhost:3000](http://localhost:3000) nel browser.
 
-To learn more about Next.js, take a look at the following resources:
+## Deploy su Vercel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Push del codice su GitHub**
+2. **Connetti il repository a Vercel**
+3. **Configura le variabili d'ambiente** in Vercel:
+   - `MONGODB_URI`: La tua stringa di connessione MongoDB Atlas
+4. **Deploy automatico**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Struttura del Progetto
 
-## Deploy on Vercel
+```
+src/
+├── app/
+│   ├── api/persone/          # API routes per CRUD
+│   ├── globals.css           # Stili globali
+│   ├── layout.tsx           # Layout principale
+│   └── page.tsx             # Homepage
+├── components/ui/           # Componenti UI Radix
+├── lib/
+│   ├── mongodb.ts          # Connessione MongoDB
+│   └── utils.ts            # Utility functions
+└── types/
+    └── persona.ts          # TypeScript interfaces
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## API Endpoints
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `GET /api/persone` - Lista persone con ricerca e paginazione
+- `POST /api/persone` - Crea nuova persona
+- `GET /api/persone/[id]` - Dettagli persona
+- `PUT /api/persone/[id]` - Aggiorna persona
+- `DELETE /api/persone/[id]` - Elimina persona
+- `POST /api/persone/import-excel` - Import da file Excel
+- `GET /api/persone/stats` - Statistiche database
+
+## Sviluppo
+
+```bash
+# Sviluppo
+npm run dev
+
+# Build
+npm run build
+
+# Lint
+npm run lint
+
+# Type check
+npm run type-check
+```
