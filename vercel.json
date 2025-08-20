@@ -1,9 +1,7 @@
 {
-  "functions": {
-    "src/app/api/**/*.ts": {
-      "maxDuration": 30
-    }
-  },
+  "version": 2,
+  "buildCommand": "next build",
+  "installCommand": "npm install",
   "env": {
     "MONGODB_URI": "@mongodb_uri"
   }
