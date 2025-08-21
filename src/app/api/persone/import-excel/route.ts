@@ -9,13 +9,8 @@ export async function POST(request: NextRequest) {
     const db = await getDatabase();
     const collection = db.collection('persone_defunte');
 
-    // Check if data already exists
-    const existingCount = await collection.countDocuments({});
-    if (existingCount > 0) {
-      return NextResponse.json({
-        message: `Dati già presenti nel database (${existingCount} record). Import non necessario.`
-      });
-    }
+    // Check if data already exists - allow import anyway but track duplicates
+    const existingCount = await collection.countDocuments();
 
     const formData = await request.formData();
     const file = formData.get('file') as File;
@@ -39,6 +34,7 @@ export async function POST(request: NextRequest) {
     
     for (const row of data as Record<string, unknown>[]) {
       const personaData: PersonaDefunta = {
+        _id: generateId(),
         id: generateId(),
         nome: cleanField(row['Nome'] || row['nome']) || '',
         cognome: cleanField(row['Cognome'] || row['cognome']) || '',
@@ -47,8 +43,8 @@ export async function POST(request: NextRequest) {
         padre: cleanField(row['Padre'] || row['padre']) || undefined,
         nome_madre: cleanField(row['Nom Madre'] || row['nome_madre']) || undefined,
         cognome_madre: cleanField(row['Cogn Madre'] || row['cognome_madre']) || undefined,
-        nome_coniuge: cleanField(row['Nom Coniuge'] || row['nome_coniuge']) || undefined,
-        cognome_coniuge: cleanField(row['Cogn Coniuge'] || row['cognome_coniuge']) || undefined,
+        nome_coniuge: cleanField(row['Nom Cs'] || row['nome_coniuge']) || undefined,
+        cognome_coniuge: cleanField(row['Cogn Cs'] || row['cognome_coniuge']) || undefined,
         created_at: new Date(),
         updated_at: new Date()
       };
@@ -59,13 +55,34 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Insert data into MongoDB
+    // Insert data into MongoDB with duplicate checking
+    let imported = 0;
+    let skipped = 0;
+
     if (personeData.length > 0) {
-      await collection.insertMany(personeData);
+      for (const personaData of personeData) {
+        // Check if person already exists (by nome + cognome)
+        const existing = await collection.findOne({
+          nome: personaData.nome,
+          cognome: personaData.cognome
+        });
+
+        if (!existing) {
+          // Remove _id field for insertion (MongoDB will generate it)
+          const { _id, ...personaForInsert } = personaData;
+          await collection.insertOne(personaForInsert);
+          imported++;
+        } else {
+          skipped++;
+        }
+      }
     }
 
     return NextResponse.json({
-      message: `Importati ${personeData.length} record dalla tabella Excel con successo`
+      message: `Import completato! ${imported} persone importate, ${skipped} saltate (già esistenti)`,
+      imported,
+      skipped,
+      total: personeData.length
     });
 
   } catch (error) {

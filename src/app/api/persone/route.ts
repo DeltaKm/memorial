@@ -73,6 +73,7 @@ export async function GET(request: NextRequest) {
 
     const response: SearchResponse = {
       persone: persone.map(p => ({
+        _id: p._id?.toString(),
         id: p.id,
         nome: p.nome,
         cognome: p.cognome,
@@ -109,7 +110,7 @@ export async function POST(request: NextRequest) {
     const db = await getDatabase();
     const collection = db.collection('persone_defunte');
 
-    const persona: PersonaDefunta = {
+    const persona = {
       id: generateId(),
       nome: body.nome,
       cognome: body.cognome,
@@ -124,9 +125,14 @@ export async function POST(request: NextRequest) {
       updated_at: new Date()
     };
 
-    await collection.insertOne(persona);
+    const result = await collection.insertOne(persona);
 
-    return NextResponse.json(persona, { status: 201 });
+    const createdPersona = {
+      _id: result.insertedId.toString(),
+      ...persona
+    };
+
+    return NextResponse.json(createdPersona, { status: 201 });
   } catch (error) {
     console.error('Error creating persona:', error);
     return NextResponse.json(

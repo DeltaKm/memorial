@@ -1,4 +1,5 @@
 export interface PersonaDefunta {
+  _id: string;
   id: string;
   nome: string;
   cognome: string;
@@ -9,6 +10,7 @@ export interface PersonaDefunta {
   cognome_madre?: string;
   nome_coniuge?: string;
   cognome_coniuge?: string;
+  note?: string;
   created_at: Date;
   updated_at: Date;
 }
@@ -23,6 +25,7 @@ export interface PersonaDefuntaCreate {
   cognome_madre?: string;
   nome_coniuge?: string;
   cognome_coniuge?: string;
+  note?: string;
 }
 
 export interface PersonaDefuntaUpdate {

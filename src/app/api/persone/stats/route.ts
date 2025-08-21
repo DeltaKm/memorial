@@ -22,11 +22,11 @@ export async function GET() {
     });
 
     return NextResponse.json({
-      totale_persone: totalPersone,
-      decessi_1809: personeWith1809,
-      con_informazioni_padre: personeWithPadre,
-      con_informazioni_madre: personeWithMadre,
-      con_informazioni_coniuge: personeWithConiuge
+      totalPersone: totalPersone,
+      personeWith1809: personeWith1809,
+      personeWithPadre: personeWithPadre,
+      personeWithMadre: personeWithMadre,
+      personeWithConiuge: personeWithConiuge
     });
 
   } catch (error) {
