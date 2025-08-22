@@ -11,8 +11,8 @@ const handler = NextAuth({
       },
       async authorize(credentials) {
         // Simple hardcoded credentials - in production use environment variables
-        const adminUsername = process.env.ADMIN_USERNAME || 'admin';
-        const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+        const adminUsername = process.env.ADMIN_USERNAME;
+        const adminPassword = process.env.ADMIN_PASSWORD;
         
         if (
           credentials?.username === adminUsername &&
@@ -51,7 +51,7 @@ const handler = NextAuth({
   session: {
     strategy: 'jwt',
   },
-  secret: process.env.NEXTAUTH_SECRET || 'memorial-secret-key',
+  secret: process.env.NEXTAUTH_SECRET,
 });
 
 export { handler as GET, handler as POST };
