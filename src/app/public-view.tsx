@@ -381,46 +381,51 @@ export default function PublicView() {
                     </p>
                   </div>
                   <div className="md:col-span-2">
-                    <Label className="text-sm font-medium text-gray-600">Date e Luoghi</Label>
-                    <div className="flex items-center gap-3 mt-2 flex-wrap">
-                      {/* Data di Decesso */}
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-medium text-gray-500">Decesso:</span>
-                        <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-red-50 text-red-700 border-red-200">
-                          {selectedPersona.data_decesso || "Non specificata"}
-                        </span>
-                      </div>
-                      
-                      {/* Luogo Decesso */}
-                      {selectedPersona.luogo_decesso && (
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-medium text-gray-500">in</span>
+                    <div className="flex items-start gap-6 mt-2">
+                      {/* Sezione Decesso */}
+                      <div className="flex gap-4">
+                        {/* Data di Decesso */}
+                        <div className="text-center">
+                          <Label className="text-xs font-medium text-gray-600 block mb-1">Data di decesso</Label>
                           <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-red-50 text-red-700 border-red-200">
-                            {selectedPersona.luogo_decesso}
+                            {selectedPersona.data_decesso || "Non specificata"}
                           </span>
                         </div>
-                      )}
+                        
+                        {/* Luogo Decesso */}
+                        {selectedPersona.luogo_decesso && (
+                          <div className="text-center">
+                            <Label className="text-xs font-medium text-gray-600 block mb-1">Luogo</Label>
+                            <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-red-50 text-red-700 border-red-200">
+                              {selectedPersona.luogo_decesso}
+                            </span>
+                          </div>
+                        )}
+                      </div>
                       
                       {/* Divisore */}
-                      <div className="h-4 w-px bg-gray-300 mx-2"></div>
+                      <div className="h-12 w-px bg-gray-300 self-center"></div>
                       
-                      {/* Data di Nascita */}
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-medium text-gray-500">Nascita:</span>
-                        <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-green-50 text-green-700 border-green-200">
-                          {selectedPersona.nascita || "Non specificata"}
-                        </span>
-                      </div>
-                      
-                      {/* Luogo Nascita */}
-                      {selectedPersona.luogo_nascita && (
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-medium text-gray-500">in</span>
+                      {/* Sezione Nascita */}
+                      <div className="flex gap-4">
+                        {/* Data di Nascita */}
+                        <div className="text-center">
+                          <Label className="text-xs font-medium text-gray-600 block mb-1">Data di Nascita</Label>
                           <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-green-50 text-green-700 border-green-200">
-                            {selectedPersona.luogo_nascita}
+                            {selectedPersona.nascita || "Non specificata"}
                           </span>
                         </div>
-                      )}
+                        
+                        {/* Luogo Nascita */}
+                        {selectedPersona.luogo_nascita && (
+                          <div className="text-center">
+                            <Label className="text-xs font-medium text-gray-600 block mb-1">Luogo</Label>
+                            <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-green-50 text-green-700 border-green-200">
+                              {selectedPersona.luogo_nascita}
+                            </span>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
