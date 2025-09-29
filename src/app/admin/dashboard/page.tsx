@@ -21,6 +21,7 @@ export default function Home() {
   const [persone, setPersone] = useState<PersonaDefunta[]>([]);
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState<{totalPersone: number; personeWithPadre: number; personeWithMadre: number; personeWithConiuge: number}>({totalPersone: 0, personeWithPadre: 0, personeWithMadre: 0, personeWithConiuge: 0});
+  const [maintenanceMode, setMaintenanceMode] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -116,9 +117,33 @@ export default function Home() {
     }
   };
 
+  // Carica lo stato della modalità manutenzione
+  const loadMaintenanceStatus = async () => {
+    try {
+      const response = await axios.get('/api/maintenance');
+      setMaintenanceMode(response.data.enabled);
+    } catch (error) {
+      console.error("Errore nel caricamento dello stato manutenzione:", error);
+    }
+  };
+
+  // Toggle modalità manutenzione
+  const toggleMaintenanceMode = async () => {
+    try {
+      const newStatus = !maintenanceMode;
+      await axios.post('/api/maintenance', { enabled: newStatus });
+      setMaintenanceMode(newStatus);
+      alert(newStatus ? 'Modalità manutenzione attivata' : 'Modalità manutenzione disattivata');
+    } catch (error) {
+      console.error("Errore nel cambiare modalità manutenzione:", error);
+      alert('Errore nel cambiare modalità manutenzione');
+    }
+  };
+
   useEffect(() => {
     loadPersone();
     loadStats();
+    loadMaintenanceStatus();
   }, [currentPage, searchTerm]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -258,6 +283,19 @@ export default function Home() {
           
           {/* Buttons section below header */}
           <div className="flex justify-center gap-3 mt-4 pt-4 border-t border-gray-100">
+            <Button
+              variant="outline"
+              onClick={toggleMaintenanceMode}
+              className={`flex items-center gap-2 ${
+                maintenanceMode 
+                  ? 'bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200' 
+                  : 'bg-green-50 hover:bg-green-100 text-green-700 border-green-200'
+              }`}
+            >
+              <div className={`w-2 h-2 rounded-full ${maintenanceMode ? 'bg-orange-500' : 'bg-green-500'}`}></div>
+              {maintenanceMode ? 'Disattiva Manutenzione' : 'Attiva Manutenzione'}
+            </Button>
+            
             <Button
               variant="outline"
               onClick={() => signOut({ callbackUrl: '/admin' })}
