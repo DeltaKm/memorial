@@ -79,4 +79,5 @@ export interface SearchParams {
   cognome_coniuge?: string;
   anno_nascita?: string;
   anno_decesso?: string;
+  admin?: boolean;
 }

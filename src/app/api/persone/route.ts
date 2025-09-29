@@ -21,6 +21,7 @@ export async function GET(request: NextRequest) {
       cognome_coniuge: searchParams.get('cognome_coniuge') || undefined,
       anno_nascita: searchParams.get('anno_nascita') || undefined,
       anno_decesso: searchParams.get('anno_decesso') || undefined,
+      admin: searchParams.get('admin') === 'true' || false,
     };
 
     const db = await getDatabase();
@@ -30,7 +31,10 @@ export async function GET(request: NextRequest) {
     const filter: Record<string, unknown> = {};
     
     // FILTRO VISIBILITÀ: Solo record visibili per la vista pubblica
-    filter.visibile = true;
+    // Se è una richiesta admin, mostra tutte le persone
+    if (!params.admin) {
+      filter.visibile = true;
+    }
 
     // General search across multiple fields
     if (params.ricerca) {

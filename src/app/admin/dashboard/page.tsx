@@ -90,6 +90,7 @@ export default function Home() {
       const params: Record<string, unknown> = {
         pagina: currentPage,
         per_pagina: 5,
+        admin: true,  // Parametro per mostrare tutte le persone, incluse quelle nascoste
         ...(searchTerm && { ricerca: searchTerm }),
         ...Object.entries(advancedSearch).reduce((acc, [key, value]) => {
           if (value.trim()) acc[key] = value.trim();
@@ -255,10 +256,41 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-      {/* Header */}
+      {/* Header - Mobile First Design */}
       <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          {/* Mobile Layout (Stack Verticale) */}
+          <div className="block md:hidden">
+            <div className="text-center space-y-4">
+              {/* Loghi affiancati sopra */}
+              <div className="flex items-center justify-center gap-8">
+                <div className="text-center">
+                  <img 
+                    src="/cropped-caiazzo-stemma-250.png" 
+                    alt="Stemma Caiazzo" 
+                    className="w-14 h-14 object-contain mx-auto"
+                  />
+                  <p className="text-xs text-gray-600 mt-1">Città di Caiazzo</p>
+                </div>
+                <div className="text-center">
+                  <img 
+                    src="/Logo-Italea-blu.svg" 
+                    alt="Logo Italea" 
+                    className="w-14 h-14 object-contain mx-auto"
+                  />
+                  <p className="text-xs text-gray-600 mt-1">Il viaggio verso le tue radici</p>
+                </div>
+              </div>
+              {/* Titolo principale sotto */}
+              <div>
+                <h1 className="text-xl font-bold text-gray-900">Admin - Radici</h1>
+                <p className="text-sm text-gray-600">Archivio e Memorie dei Defunti</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop Layout (Orizzontale) */}
+          <div className="hidden md:flex items-center justify-between">
             <div className="text-center">
               <img 
                 src="/cropped-caiazzo-stemma-250.png" 
@@ -267,7 +299,7 @@ export default function Home() {
               />
               <p className="text-xs text-gray-600 mt-1">Città di Caiazzo</p>
             </div>
-            <div className="absolute left-1/2 transform -translate-x-1/2 text-center">
+            <div className="text-center">
               <h1 className="text-3xl font-bold text-gray-900">Dashboard Admin - Radici</h1>
               <p className="text-gray-600 mt-1">Archivio e Memorie dei Defunti</p>
             </div>
@@ -281,52 +313,108 @@ export default function Home() {
             </div>
           </div>
           
-          {/* Sezione pulsanti - layout con posizionamento assoluto per centrare */}
-          <div className="relative mt-4 pt-4 border-t border-gray-100">
-            {/* Pulsanti a sinistra (allineati con logo Italea) */}
-            <div className="absolute left-0 flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={toggleMaintenanceMode}
-                className={`flex items-center gap-2 text-xs ${
-                  maintenanceMode 
-                    ? 'bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200' 
-                    : 'bg-green-50 hover:bg-green-100 text-green-700 border-green-200'
-                }`}
-              >
-                <div className={`w-2 h-2 rounded-full ${maintenanceMode ? 'bg-orange-500' : 'bg-green-500'}`}></div>
-                {maintenanceMode ? 'Disattiva Manutenzione' : 'Attiva Manutenzione'}
-              </Button>
+          {/* Sezione pulsanti - Responsive */}
+          <div className="mt-4 pt-4 border-t border-gray-100">
+            {/* Mobile Layout - Stack Verticale */}
+            <div className="block md:hidden space-y-3">
+              {/* Pulsante Aggiungi Persona - Prima su mobile */}
+              <div className="flex justify-center">
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button 
+                      onClick={() => {
+                        setEditingPersona(null);
+                        resetForm();
+                      }}
+                      className="bg-black hover:bg-stone-900 text-white w-full sm:w-auto"
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Aggiungi Persona
+                    </Button>
+                  </DialogTrigger>
+                </Dialog>
+              </div>
               
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => signOut({ callbackUrl: '/admin' })}
-                className="bg-white hover:bg-red-100 text-red-700 border-red-100 flex items-center gap-2 text-xs"
-              >
-                <LogOut className="w-3 h-3" />
-                Esci
-              </Button>
-            </div>
-            
-            {/* Pulsante Aggiungi Persona perfettamente centrato */}
-            <div className="flex justify-center">
-            
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
-                <Button 
-                  onClick={() => {
-                    setEditingPersona(null);
-                    resetForm();
-                  }}
-                  className="bg-black hover:bg-stone-900  text-white"
+              {/* Pulsanti di controllo - Sotto su mobile */}
+              <div className="flex gap-2 justify-center">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={toggleMaintenanceMode}
+                  className={`flex items-center gap-2 text-xs ${
+                    maintenanceMode 
+                      ? 'bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200' 
+                      : 'bg-green-50 hover:bg-green-100 text-green-700 border-green-200'
+                  }`}
                 >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Aggiungi Persona
+                  <div className={`w-2 h-2 rounded-full ${maintenanceMode ? 'bg-orange-500' : 'bg-green-500'}`}></div>
+                  {maintenanceMode ? 'Disattiva Manutenzione' : 'Attiva Manutenzione'}
                 </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white">
+                
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => signOut({ callbackUrl: '/admin' })}
+                  className="bg-white hover:bg-red-100 text-red-700 border-red-100 flex items-center gap-2 text-xs"
+                >
+                  <LogOut className="w-3 h-3" />
+                  Esci
+                </Button>
+              </div>
+            </div>
+
+            {/* Desktop Layout - Orizzontale */}
+            <div className="hidden md:block relative">
+              {/* Pulsanti a sinistra */}
+              <div className="absolute left-0 flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={toggleMaintenanceMode}
+                  className={`flex items-center gap-2 text-xs ${
+                    maintenanceMode 
+                      ? 'bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200' 
+                      : 'bg-green-50 hover:bg-green-100 text-green-700 border-green-200'
+                  }`}
+                >
+                  <div className={`w-2 h-2 rounded-full ${maintenanceMode ? 'bg-orange-500' : 'bg-green-500'}`}></div>
+                  {maintenanceMode ? 'Disattiva Manutenzione' : 'Attiva Manutenzione'}
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => signOut({ callbackUrl: '/admin' })}
+                  className="bg-white hover:bg-red-100 text-red-700 border-red-100 flex items-center gap-2 text-xs"
+                >
+                  <LogOut className="w-3 h-3" />
+                  Esci
+                </Button>
+              </div>
+              
+              {/* Pulsante Aggiungi Persona centrato */}
+              <div className="flex justify-center">
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button 
+                      onClick={() => {
+                        setEditingPersona(null);
+                        resetForm();
+                      }}
+                      className="bg-black hover:bg-stone-900 text-white"
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Aggiungi Persona
+                    </Button>
+                  </DialogTrigger>
+                </Dialog>
+              </div>
+            </div>
+          </div>
+
+          {/* Dialog Aggiungi/Modifica Persona */}
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white">
                   <DialogHeader>
                     <DialogTitle>
                       {editingPersona ? "Radici - Modifica Persona" : "Radici - Aggiungi Persona"}
@@ -365,31 +453,48 @@ export default function Home() {
                         value={formData.nascita}
                         onChange={(e) => {
                           const value = e.target.value;
-                          if (validateDateFormat(value)) {
-                            setFormData({...formData, nascita: value});
-                          }
+                          setFormData({...formData, nascita: value});
                         }}
-                        placeholder="es. (1780) o 15/03/1780"
+                        placeholder="1780 o 15/3/80"
                         className={!validateDateFormat(formData.nascita) ? "border-red-500" : ""}
                       />
-                      <p className="text-xs text-gray-500 mt-1">Formato: solo anno (1780) o data completa 15/03/1780</p>
+                      <p className="text-xs text-gray-500 mt-1">Anno o data completa</p>
                     </div>
                     <div>
-                      <Label htmlFor="data_decesso">Data/Anno di Decesso *</Label>
+                      <Label htmlFor="data_decesso">Data/Anno di Decesso</Label>
                       <Input
                         id="data_decesso"
                         value={formData.data_decesso}
                         onChange={(e) => {
                           const value = e.target.value;
-                          if (validateDateFormat(value)) {
-                            setFormData({...formData, data_decesso: value});
-                          }
+                          setFormData({...formData, data_decesso: value});
                         }}
-                        placeholder="es. (1809) o 03/01/1809"
+                        placeholder="1809 o 3/1/09"
                         className={!validateDateFormat(formData.data_decesso) ? "border-red-500" : ""}
                         required
                       />
-                      <p className="text-xs text-gray-500 mt-1">Formato: solo anno (1809) o data completa 03/01/1809</p>
+                      <p className="text-xs text-gray-500 mt-1">Anno o data completa</p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="luogo_nascita">Luogo di Nascita</Label>
+                      <Input
+                        id="luogo_nascita"
+                        value={formData.luogo_nascita}
+                        onChange={(e) => setFormData({...formData, luogo_nascita: e.target.value})}
+                        placeholder="Città o paese"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="luogo_decesso">Luogo di Decesso</Label>
+                      <Input
+                        id="luogo_decesso"
+                        value={formData.luogo_decesso}
+                        onChange={(e) => setFormData({...formData, luogo_decesso: e.target.value})}
+                        placeholder="Città o paese"
+                      />
                     </div>
                   </div>
 
@@ -466,9 +571,7 @@ export default function Home() {
                   </Button>
                 </form>
               </DialogContent>
-            </Dialog>
-            </div>  {/* Chiusura div flex justify-center */}
-          </div>    {/* Chiusura div relative */}
+          </Dialog>
         </div>
       </div>
 
@@ -686,7 +789,61 @@ export default function Home() {
               </div>
             ) : (
               <>
-                <div className="overflow-x-auto">
+                {/* Mobile Card View - Admin */}
+                <div className="block md:hidden space-y-4">
+                  {persone.map((persona) => (
+                    <Card 
+                      key={persona._id || persona.id || `${persona.nome}-${persona.cognome}`}
+                      className="cursor-pointer hover:shadow-md transition-shadow border-l-4 border-l-indigo-500"
+                      onClick={() => {
+                        setSelectedPersona(persona);
+                        setIsDetailDialogOpen(true);
+                      }}
+                    >
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-gray-900 text-lg">
+                              {persona.nome} {persona.cognome}
+                            </h3>
+                            <div className="flex items-center gap-3 mt-2">
+                              <p className="text-sm text-gray-600">
+                                Nascita: {persona.nascita || "Non specificata"}
+                              </p>
+                              <Badge 
+                                variant={persona.visibile ? "default" : "secondary"}
+                                className={`text-xs ${
+                                  persona.visibile 
+                                    ? "bg-green-100 text-green-800 border-green-200" 
+                                    : "bg-gray-100 text-gray-600 border-gray-200"
+                                }`}
+                              >
+                                {persona.visibile ? "Visibile" : "Nascosto"}
+                              </Badge>
+                            </div>
+                          </div>
+                          <div className="flex gap-2 shrink-0">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-10 w-10 p-0 hover:bg-blue-100"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedPersona(persona);
+                                setIsDetailDialogOpen(true);
+                              }}
+                            >
+                              <Eye className="w-5 h-5" />
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+
+                {/* Desktop Table View - Admin */}
+                <div className="hidden md:block overflow-x-auto">
                   <Table className="enhanced-table">
                     <TableHeader>
                       <TableRow>
@@ -747,26 +904,35 @@ export default function Home() {
                   </Table>
                 </div>
 
-                {/* Paginazione - Stile Originale con Numeri */}
+                {/* Paginazione Admin - Responsive */}
                 {totalPages > 1 && (
-                  <div className="flex items-center justify-between mt-6 pt-4 border-t">
-                    <div className="text-sm text-gray-600">
-                      Pagina {currentPage} di {totalPages} ({totalPersone} risultati totali)
+                  <div className="mt-6 pt-4 border-t space-y-4">
+                    {/* Info paginazione - Sempre visibile e centrata su mobile */}
+                    <div className="text-center">
+                      <div className="text-sm text-gray-600 font-medium">
+                        Pagina {currentPage} di {totalPages}
+                      </div>
+                      <div className="text-xs text-gray-500 mt-1">
+                        {totalPersone} risultati totali
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    
+                    {/* Controlli paginazione */}
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                      {/* Pulsante Precedente */}
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => setCurrentPage(currentPage - 1)}
                         disabled={currentPage === 1}
-                        className="flex items-center gap-1 text-gray-700 border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex items-center gap-2 w-full sm:w-auto h-10 text-gray-700 border-gray-300 hover:bg-gray-50 disabled:opacity-50"
                       >
-                        <ChevronLeft className="w-4 h-4 text-gray-700" />
+                        <ChevronLeft className="w-4 h-4" />
                         Precedente
                       </Button>
                       
-                      <div className="flex items-center gap-1">
-                        {/* Mostra alcune pagine intorno a quella corrente */}
+                      {/* Numeri pagina - Solo su desktop */}
+                      <div className="hidden sm:flex items-center gap-1">
                         {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                           const pageNum = Math.max(1, Math.min(currentPage - 2 + i, totalPages - 4)) + Math.min(i, 4);
                           if (pageNum <= totalPages && pageNum >= 1) {
@@ -776,9 +942,9 @@ export default function Home() {
                                 variant={currentPage === pageNum ? "default" : "outline"}
                                 size="sm"
                                 onClick={() => setCurrentPage(pageNum)}
-                                className={`w-8 h-8 p-0 ${
+                                className={`w-10 h-10 p-0 ${
                                   currentPage === pageNum 
-                                    ? "bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700" 
+                                    ? "bg-black text-white border-black hover:bg-gray-800" 
                                     : "text-gray-700 border-gray-300 hover:bg-gray-50"
                                 }`}
                               >
@@ -790,15 +956,34 @@ export default function Home() {
                         })}
                       </div>
                       
+                      {/* Input diretto pagina - Solo su mobile */}
+                      <div className="flex sm:hidden items-center gap-2">
+                        <span className="text-sm text-gray-600">Vai a:</span>
+                        <input
+                          type="number"
+                          min="1"
+                          max={totalPages}
+                          value={currentPage}
+                          onChange={(e) => {
+                            const page = parseInt(e.target.value);
+                            if (page >= 1 && page <= totalPages) {
+                              setCurrentPage(page);
+                            }
+                          }}
+                          className="w-16 h-8 text-center border border-gray-300 rounded text-sm"
+                        />
+                      </div>
+                      
+                      {/* Pulsante Successiva */}
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => setCurrentPage(currentPage + 1)}
                         disabled={currentPage === totalPages}
-                        className="flex items-center gap-1 text-gray-700 border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex items-center gap-2 w-full sm:w-auto h-10 text-gray-700 border-gray-300 hover:bg-gray-50 disabled:opacity-50"
                       >
                         Successiva
-                        <ChevronRight className="w-4 h-4 text-gray-700" />
+                        <ChevronRight className="w-4 h-4" />
                       </Button>
                     </div>
                   </div>
@@ -811,7 +996,7 @@ export default function Home() {
 
       {/* Dialog dettagli persona - Stile Originale */}
       <Dialog open={isDetailDialogOpen} onOpenChange={setIsDetailDialogOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-white">
+        <DialogContent className="w-full max-w-[95vw] sm:max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader className="text-center">
             <div className="flex flex-col items-center gap-4 mb-4">
               <img 
@@ -819,81 +1004,76 @@ export default function Home() {
                 alt="Stemma Comune di Caiazzo" 
                 className="w-16 h-16 object-contain"
               />
-              <DialogTitle className="text-xl font-semibold text-gray-900">
+              <DialogTitle className="text-lg sm:text-xl font-semibold text-gray-900 text-center px-2">
                 Scheda - {selectedPersona?.nome} {selectedPersona?.cognome}
               </DialogTitle>
               <div className="mt-2">
-                <span className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ${
+                <span className={`inline-flex items-center rounded-full px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium ${
                   selectedPersona?.visibile 
                     ? 'bg-green-100 text-green-800' 
                     : 'bg-red-100 text-red-800'
                 }`}>
-                  {selectedPersona?.visibile ? 'Visibile al pubblico' : '🔒 Solo amministratori'}
+                  {selectedPersona?.visibile ? 'Visibile al pubblico' : '🔒 Solo admin'}
                 </span>
               </div>
             </div>
           </DialogHeader>
           
           {selectedPersona && (
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6 px-2 sm:px-0">
               {/* Informazioni Personali */}
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-lg">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <User className="w-5 h-5" />
                   Informazioni Personali
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   <div>
                     <Label className="text-sm font-medium text-gray-600">Nome - Cognome</Label>
                     <div className="text-lg font-semibold text-gray-900 mt-1">
                       {selectedPersona.nome} {selectedPersona.cognome}
                     </div>
                   </div>
-                  <div className="md:col-span-2">
-                    <div className="flex items-start gap-6 mt-2">
-                      {/* Sezione Decesso */}
-                      <div className="flex gap-4">
-                        {/* Data di Decesso */}
-                        <div className="text-center">
-                          <Label className="text-xs font-medium text-gray-600 block mb-1">Data di decesso</Label>
-                          <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-red-50 text-red-700 border-red-200">
-                            {selectedPersona.data_decesso || "Non specificata"}
-                          </span>
-                        </div>
-                        
-                        {/* Luogo Decesso */}
-                        {selectedPersona.luogo_decesso && (
-                          <div className="text-center">
-                            <Label className="text-xs font-medium text-gray-600 block mb-1">Luogo</Label>
-                            <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-red-50 text-red-700 border-red-200">
-                              {selectedPersona.luogo_decesso}
-                            </span>
-                          </div>
-                        )}
+                  {/* Sezione Decesso - Responsive */}
+                  <div className="space-y-3">
+                    <Label className="text-sm font-medium text-gray-600 block">Informazioni Decesso</Label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {/* Data di Decesso */}
+                      <div className="text-center sm:text-left">
+                        <Label className="text-xs font-medium text-gray-600 block mb-1">Data di decesso</Label>
+                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-red-50 text-red-700 border-red-200">
+                          {selectedPersona.data_decesso || "Non specificata"}
+                        </span>
                       </div>
                       
-                      {/* Divisore */}
-                      <div className="h-12 w-px bg-gray-300 self-center"></div>
+                      {/* Luogo Decesso */}
+                      <div className="text-center sm:text-left">
+                        <Label className="text-xs font-medium text-gray-600 block mb-1">Luogo di decesso</Label>
+                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-red-50 text-red-700 border-red-200">
+                          {selectedPersona.luogo_decesso || "Non specificato"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Sezione Nascita - Responsive */}
+                  <div className="space-y-3">
+                    <Label className="text-sm font-medium text-gray-600 block">Informazioni Nascita</Label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {/* Data di Nascita */}
+                      <div className="text-center sm:text-left">
+                        <Label className="text-xs font-medium text-gray-600 block mb-1">Data di nascita</Label>
+                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-green-50 text-green-700 border-green-200">
+                          {selectedPersona.nascita || "Non specificata"}
+                        </span>
+                      </div>
                       
-                      {/* Sezione Nascita */}
-                      <div className="flex gap-4">
-                        {/* Data di Nascita */}
-                        <div className="text-center">
-                          <Label className="text-xs font-medium text-gray-600 block mb-1">Data di Nascita</Label>
-                          <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-green-50 text-green-700 border-green-200">
-                            {selectedPersona.nascita || "Non specificata"}
-                          </span>
-                        </div>
-                        
-                        {/* Luogo Nascita */}
-                        {selectedPersona.luogo_nascita && (
-                          <div className="text-center">
-                            <Label className="text-xs font-medium text-gray-600 block mb-1">Luogo</Label>
-                            <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-green-50 text-green-700 border-green-200">
-                              {selectedPersona.luogo_nascita}
-                            </span>
-                          </div>
-                        )}
+                      {/* Luogo Nascita */}
+                      <div className="text-center sm:text-left">
+                        <Label className="text-xs font-medium text-gray-600 block mb-1">Luogo di nascita</Label>
+                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-green-50 text-green-700 border-green-200">
+                          {selectedPersona.luogo_nascita || "Non specificato"}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -901,12 +1081,12 @@ export default function Home() {
               </div>
 
               {/* Informazioni Familiari */}
-              <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-6 rounded-lg">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Users className="w-5 h-5" />
                   Informazioni Familiari
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6">
                   {/* Padre */}
                   <div className="space-y-2">
                     <Label className="text-sm font-medium text-gray-600 flex items-center gap-1">
@@ -948,8 +1128,9 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Azioni */}
-              <div className="flex justify-between items-center pt-4 border-t">
+              {/* Azioni - Responsive */}
+              <div className="pt-4 border-t space-y-4">
+                {/* Info IDs */}
                 <div className="space-y-1">
                   <div className="text-xs text-gray-500">
                     Registro ID: {selectedPersona.registro || "Non specificato"}
@@ -958,7 +1139,9 @@ export default function Home() {
                     Record ID: {selectedPersona._id || selectedPersona.id || 'N/A'}
                   </div>
                 </div>
-                <div className="flex gap-2">
+                
+                {/* Pulsanti - Stack su mobile, inline su desktop */}
+                <div className="flex flex-col sm:flex-row gap-2 sm:justify-end">
                   <Button
                     variant="outline"
                     onClick={() => {
@@ -984,7 +1167,7 @@ export default function Home() {
                       });
                       setIsDialogOpen(true);
                     }}
-                    className="flex items-center gap-2"
+                    className="flex items-center justify-center gap-2 w-full sm:w-auto"
                   >
                     <Edit className="w-4 h-4" />
                     Modifica
@@ -995,7 +1178,7 @@ export default function Home() {
                       setIsDetailDialogOpen(false);
                       handleDelete(selectedPersona._id || selectedPersona.id);
                     }}
-                    className="text-red-600 hover:text-red-700 hover:bg-red-50 flex items-center gap-2"
+                    className="text-red-600 hover:text-red-700 hover:bg-red-50 flex items-center justify-center gap-2 w-full sm:w-auto"
                   >
                     <Trash2 className="w-4 h-4" />
                     Elimina

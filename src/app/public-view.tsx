@@ -92,10 +92,41 @@ export default function PublicView() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-      {/* Header */}
+      {/* Header - Mobile First Design */}
       <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          {/* Mobile Layout (Stack Verticale) */}
+          <div className="block md:hidden">
+            <div className="text-center space-y-4">
+              {/* Loghi affiancati sopra */}
+              <div className="flex items-center justify-center gap-8">
+                <div className="text-center">
+                  <img 
+                    src="/cropped-caiazzo-stemma-250.png" 
+                    alt="Stemma Caiazzo" 
+                    className="w-14 h-14 object-contain mx-auto"
+                  />
+                  <p className="text-xs text-gray-600 mt-1">Città di Caiazzo</p>
+                </div>
+                <div className="text-center">
+                  <img 
+                    src="/Logo-Italea-blu.svg" 
+                    alt="Logo Italea" 
+                    className="w-14 h-14 object-contain mx-auto"
+                  />
+                  <p className="text-xs text-gray-600 mt-1">Il viaggio verso le tue radici</p>
+                </div>
+              </div>
+              {/* Titolo principale sotto */}
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">Radici</h1>
+                <p className="text-sm text-gray-600">Archivio e Memorie dei Defunti</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop Layout (Orizzontale) */}
+          <div className="hidden md:flex items-center justify-between">
             <div className="text-center">
               <img 
                 src="/cropped-caiazzo-stemma-250.png" 
@@ -104,7 +135,7 @@ export default function PublicView() {
               />
               <p className="text-xs text-gray-600 mt-1">Città di Caiazzo</p>
             </div>
-            <div className="absolute left-1/2 transform -translate-x-1/2 text-center">
+            <div className="text-center">
               <h1 className="text-3xl font-bold text-gray-900">Radici</h1>
               <p className="text-gray-600">Archivio e Memorie dei Defunti</p>
             </div>
@@ -138,16 +169,20 @@ export default function PublicView() {
               </TabsList>
               
               <TabsContent value="semplice" className="space-y-4">
-                <div className="flex gap-4">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                   <div className="flex-1">
                     <Input
                       placeholder="Cerca per nome, cognome, padre, madre o coniuge..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full"
+                      className="w-full h-12 text-base"
                     />
                   </div>
-                  <Button onClick={loadPersone} variant="outline">
+                  <Button 
+                    onClick={loadPersone} 
+                    variant="outline"
+                    className="h-12 px-6 w-full sm:w-auto"
+                  >
                     <Search className="w-4 h-4 mr-2" />
                     Cerca
                   </Button>
@@ -155,59 +190,75 @@ export default function PublicView() {
               </TabsContent>
               
               <TabsContent value="avanzata" className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   <Input
                     placeholder="Nome"
                     value={advancedSearch.nome}
                     onChange={(e) => setAdvancedSearch({...advancedSearch, nome: e.target.value})}
+                    className="h-11"
                   />
                   <Input
                     placeholder="Cognome"
                     value={advancedSearch.cognome}
                     onChange={(e) => setAdvancedSearch({...advancedSearch, cognome: e.target.value})}
+                    className="h-11"
                   />
                   <Input
                     placeholder="Nome Padre"
                     value={advancedSearch.padre}
                     onChange={(e) => setAdvancedSearch({...advancedSearch, padre: e.target.value})}
+                    className="h-11"
                   />
                   <Input
                     placeholder="Nome Madre"
                     value={advancedSearch.nome_madre}
                     onChange={(e) => setAdvancedSearch({...advancedSearch, nome_madre: e.target.value})}
+                    className="h-11"
                   />
                   <Input
                     placeholder="Cognome Madre"
                     value={advancedSearch.cognome_madre}
                     onChange={(e) => setAdvancedSearch({...advancedSearch, cognome_madre: e.target.value})}
+                    className="h-11"
                   />
                   <Input
                     placeholder="Nome Coniuge"
                     value={advancedSearch.nome_coniuge}
                     onChange={(e) => setAdvancedSearch({...advancedSearch, nome_coniuge: e.target.value})}
+                    className="h-11"
                   />
                   <Input
                     placeholder="Cognome Coniuge"
                     value={advancedSearch.cognome_coniuge}
                     onChange={(e) => setAdvancedSearch({...advancedSearch, cognome_coniuge: e.target.value})}
+                    className="h-11"
                   />
                   <Input
                     placeholder="Anno Nascita"
                     value={advancedSearch.anno_nascita}
                     onChange={(e) => setAdvancedSearch({...advancedSearch, anno_nascita: e.target.value})}
+                    className="h-11"
                   />
                   <Input
                     placeholder="Anno Decesso"
                     value={advancedSearch.anno_decesso}
                     onChange={(e) => setAdvancedSearch({...advancedSearch, anno_decesso: e.target.value})}
+                    className="h-11"
                   />
                 </div>
-                <div className="flex gap-2">
-                  <Button onClick={handleAdvancedSearch}>
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-2">
+                  <Button 
+                    onClick={handleAdvancedSearch}
+                    className="h-11 w-full sm:w-auto"
+                  >
                     <Search className="w-4 h-4 mr-2" />
                     Ricerca Avanzata
                   </Button>
-                  <Button onClick={clearAdvancedSearch} variant="outline">
+                  <Button 
+                    onClick={clearAdvancedSearch} 
+                    variant="outline"
+                    className="h-11 w-full sm:w-auto"
+                  >
                     Pulisci Filtri
                   </Button>
                 </div>
@@ -243,7 +294,43 @@ export default function PublicView() {
               </div>
             ) : (
               <>
-                <div className="overflow-x-auto">
+                {/* Mobile Card View */}
+                <div className="block md:hidden space-y-4">
+                  {persone.map((persona) => (
+                    <Card 
+                      key={persona.id} 
+                      className="cursor-pointer hover:shadow-md transition-shadow border-l-4 border-l-blue-500"
+                      onClick={() => handleViewDetails(persona)}
+                    >
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-gray-900 text-lg">
+                              {persona.nome} {persona.cognome}
+                            </h3>
+                            <p className="text-sm text-gray-600 mt-1">
+                              Nascita: {persona.nascita || "Data sconosciuta"}
+                            </p>
+                          </div>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="h-10 w-10 p-0 hover:bg-blue-100 shrink-0"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleViewDetails(persona);
+                            }}
+                          >
+                            <Eye className="w-5 h-5" />
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+
+                {/* Desktop Table View */}
+                <div className="hidden md:block overflow-x-auto">
                   <Table className="enhanced-table">
                     <TableHeader>
                       <TableRow>
@@ -290,25 +377,35 @@ export default function PublicView() {
                   </Table>
                 </div>
 
-                {/* Pagination */}
+                {/* Pagination - Responsive */}
                 {totalPages > 1 && (
-                  <div className="flex items-center justify-between mt-6 pt-4 border-t">
-                    <div className="text-sm text-gray-600">
-                      Pagina {currentPage} di {totalPages} ({totalPersone} risultati totali)
+                  <div className="mt-6 pt-4 border-t space-y-4">
+                    {/* Info paginazione - Sempre visibile e centrata su mobile */}
+                    <div className="text-center">
+                      <div className="text-sm text-gray-600 font-medium">
+                        Pagina {currentPage} di {totalPages}
+                      </div>
+                      <div className="text-xs text-gray-500 mt-1">
+                        {totalPersone} risultati totali
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    
+                    {/* Controlli paginazione */}
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                      {/* Pulsante Precedente */}
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => setCurrentPage(currentPage - 1)}
                         disabled={currentPage === 1}
-                        className="flex items-center gap-1"
+                        className="flex items-center gap-2 w-full sm:w-auto h-10"
                       >
                         <ChevronLeft className="w-4 h-4" />
                         Precedente
                       </Button>
                       
-                      <div className="flex items-center gap-1">
+                      {/* Numeri pagina - Solo su desktop */}
+                      <div className="hidden sm:flex items-center gap-1">
                         {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                           const pageNum = Math.max(1, Math.min(currentPage - 2 + i, totalPages - 4)) + Math.min(i, 4);
                           if (pageNum <= totalPages && pageNum >= 1) {
@@ -318,7 +415,7 @@ export default function PublicView() {
                                 variant={currentPage === pageNum ? "default" : "outline"}
                                 size="sm"
                                 onClick={() => setCurrentPage(pageNum)}
-                                className="w-8 h-8 p-0"
+                                className="w-10 h-10 p-0"
                               >
                                 {pageNum}
                               </Button>
@@ -328,12 +425,31 @@ export default function PublicView() {
                         })}
                       </div>
                       
+                      {/* Input diretto pagina - Solo su mobile */}
+                      <div className="flex sm:hidden items-center gap-2">
+                        <span className="text-sm text-gray-600">Vai a:</span>
+                        <input
+                          type="number"
+                          min="1"
+                          max={totalPages}
+                          value={currentPage}
+                          onChange={(e) => {
+                            const page = parseInt(e.target.value);
+                            if (page >= 1 && page <= totalPages) {
+                              setCurrentPage(page);
+                            }
+                          }}
+                          className="w-16 h-8 text-center border border-gray-300 rounded text-sm"
+                        />
+                      </div>
+                      
+                      {/* Pulsante Successiva */}
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => setCurrentPage(currentPage + 1)}
                         disabled={currentPage === totalPages}
-                        className="flex items-center gap-1"
+                        className="flex items-center gap-2 w-full sm:w-auto h-10"
                       >
                         Successiva
                         <ChevronRight className="w-4 h-4" />
@@ -349,7 +465,7 @@ export default function PublicView() {
 
       {/* Detail View Dialog */}
       <Dialog open={isDetailDialogOpen} onOpenChange={setIsDetailDialogOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="w-full max-w-[95vw] sm:max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader className="text-center">
             <div className="flex flex-col items-center gap-4 mb-4">
               <img 
@@ -357,84 +473,79 @@ export default function PublicView() {
                 alt="Stemma Comune di Caiazzo" 
                 className="w-16 h-16 object-contain"
               />
-              <DialogTitle className="text-xl font-semibold text-gray-900">
+              <DialogTitle className="text-lg sm:text-xl font-semibold text-gray-900 text-center px-2">
                 Scheda - {selectedPersona?.nome} {selectedPersona?.cognome}
               </DialogTitle>
             </div>
           </DialogHeader>
           
           {selectedPersona && (
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6 px-2 sm:px-0">
               {/* Informazioni Personali */}
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg">
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-lg">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <User className="w-5 h-5" />
                   Informazioni Personali
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   <div>
                     <Label className="text-sm font-medium text-gray-600">Nome - Cognome</Label>
                     <p className="text-lg font-semibold text-gray-900 mt-1">
                       {selectedPersona.nome} {selectedPersona.cognome}
                     </p>
                   </div>
-                  <div className="md:col-span-2">
-                    <div className="flex items-start gap-6 mt-2">
-                      {/* Sezione Decesso */}
-                      <div className="flex gap-4">
-                        {/* Data di Decesso */}
-                        <div className="text-center">
-                          <Label className="text-xs font-medium text-gray-600 block mb-1">Data di decesso</Label>
-                          <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-red-50 text-red-700 border-red-200">
-                            {selectedPersona.data_decesso || "Non specificata"}
-                          </span>
-                        </div>
-                        
-                        {/* Luogo Decesso */}
-                        {selectedPersona.luogo_decesso && (
-                          <div className="text-center">
-                            <Label className="text-xs font-medium text-gray-600 block mb-1">Luogo</Label>
-                            <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-red-50 text-red-700 border-red-200">
-                              {selectedPersona.luogo_decesso}
-                            </span>
-                          </div>
-                        )}
+                  {/* Sezione Decesso - Responsive */}
+                  <div className="space-y-3">
+                    <Label className="text-sm font-medium text-gray-600 block">Informazioni Decesso</Label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {/* Data di Decesso */}
+                      <div className="text-center sm:text-left">
+                        <Label className="text-xs font-medium text-gray-600 block mb-1">Data di decesso</Label>
+                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-red-50 text-red-700 border-red-200">
+                          {selectedPersona.data_decesso || "Non specificata"}
+                        </span>
                       </div>
                       
-                      {/* Divisore */}
-                      <div className="h-12 w-px bg-gray-300 self-center"></div>
+                      {/* Luogo Decesso */}
+                      <div className="text-center sm:text-left">
+                        <Label className="text-xs font-medium text-gray-600 block mb-1">Luogo di decesso</Label>
+                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-red-50 text-red-700 border-red-200">
+                          {selectedPersona.luogo_decesso || "Non specificato"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Sezione Nascita - Responsive */}
+                  <div className="space-y-3">
+                    <Label className="text-sm font-medium text-gray-600 block">Informazioni Nascita</Label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {/* Data di Nascita */}
+                      <div className="text-center sm:text-left">
+                        <Label className="text-xs font-medium text-gray-600 block mb-1">Data di nascita</Label>
+                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-green-50 text-green-700 border-green-200">
+                          {selectedPersona.nascita || "Non specificata"}
+                        </span>
+                      </div>
                       
-                      {/* Sezione Nascita */}
-                      <div className="flex gap-4">
-                        {/* Data di Nascita */}
-                        <div className="text-center">
-                          <Label className="text-xs font-medium text-gray-600 block mb-1">Data di Nascita</Label>
-                          <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-green-50 text-green-700 border-green-200">
-                            {selectedPersona.nascita || "Non specificata"}
-                          </span>
-                        </div>
-                        
-                        {/* Luogo Nascita */}
-                        {selectedPersona.luogo_nascita && (
-                          <div className="text-center">
-                            <Label className="text-xs font-medium text-gray-600 block mb-1">Luogo</Label>
-                            <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-green-50 text-green-700 border-green-200">
-                              {selectedPersona.luogo_nascita}
-                            </span>
-                          </div>
-                        )}
+                      {/* Luogo Nascita */}
+                      <div className="text-center sm:text-left">
+                        <Label className="text-xs font-medium text-gray-600 block mb-1">Luogo di nascita</Label>
+                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-green-50 text-green-700 border-green-200">
+                          {selectedPersona.luogo_nascita || "Non specificato"}
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
               {/* Informazioni Familiari */}
-              <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-6 rounded-lg">
+              <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-6 rounded-lg">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Users className="w-5 h-5" />
                   Informazioni Familiari
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6">
                   {/* Padre */}
                   <div className="space-y-2">
                     <Label className="text-sm font-medium text-gray-600 flex items-center gap-1">
@@ -461,7 +572,7 @@ export default function PublicView() {
                   </div>
                   
                   {/* Coniuge */}
-                  <div className="space-y-2 md:col-span-2">
+                  <div className="space-y-2">
                     <Label className="text-sm font-medium text-gray-600 flex items-baseline gap-1">
                       <span className="text-lg leading-none">⚭</span>
                       Coniuge
