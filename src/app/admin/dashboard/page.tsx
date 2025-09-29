@@ -998,7 +998,17 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex justify-between items-center text-gray-600">
             <p>Città di Caiazzo Radici ©</p>
-            <p className="text-sm text-gray-400">Powered by CMH</p>
+            <p className="text-sm text-gray-400">
+              Powered by{' '}
+              <a 
+                href="https://cmh.it/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:text-blue-600 hover:underline transition-colors"
+              >
+                CMH
+              </a>
+            </p>
           </div>
         </div>
       </footer>
