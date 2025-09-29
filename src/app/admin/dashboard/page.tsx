@@ -63,6 +63,26 @@ export default function Home() {
     note: ""
   });
 
+  // Funzione per validare formato data
+  const validateDateFormat = (value: string): boolean => {
+    if (!value.trim()) return true; // Vuoto è permesso
+    
+    // Solo anno: (1809) o 1809
+    const yearOnlyRegex = /^(\(?\d{4}\)?)$/;
+    if (yearOnlyRegex.test(value.trim())) return true;
+    
+    // Data completa: dd/mm/yyyy o dd/mm/yy
+    const fullDateRegex = /^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/;
+    if (fullDateRegex.test(value.trim())) {
+      const [, day, month, year] = value.trim().match(fullDateRegex) || [];
+      const dayNum = parseInt(day);
+      const monthNum = parseInt(month);
+      return dayNum >= 1 && dayNum <= 31 && monthNum >= 1 && monthNum <= 12;
+    }
+    
+    return false;
+  };
+
   const loadPersone = async () => {
     setLoading(true);
     try {
@@ -263,7 +283,7 @@ export default function Home() {
                 <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white">
                   <DialogHeader>
                     <DialogTitle>
-                      {editingPersona ? "Modifica Persona" : "Aggiungi Nuova Persona"}
+                      {editingPersona ? "Radici - Modifica Persona" : "Radici - Aggiungi Persona"}
                     </DialogTitle>
                     <DialogDescription>
                       Inserisci le informazioni della persona nel registro storico
@@ -297,19 +317,33 @@ export default function Home() {
                       <Input
                         id="nascita"
                         value={formData.nascita}
-                        onChange={(e) => setFormData({...formData, nascita: e.target.value})}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          if (validateDateFormat(value)) {
+                            setFormData({...formData, nascita: value});
+                          }
+                        }}
                         placeholder="es. (1780) o 15/03/1780"
+                        className={!validateDateFormat(formData.nascita) ? "border-red-500" : ""}
                       />
+                      <p className="text-xs text-gray-500 mt-1">Formato: solo anno (1780) o data completa 15/03/1780</p>
                     </div>
                     <div>
                       <Label htmlFor="data_decesso">Data/Anno di Decesso *</Label>
                       <Input
                         id="data_decesso"
                         value={formData.data_decesso}
-                        onChange={(e) => setFormData({...formData, data_decesso: e.target.value})}
-                        placeholder="es. 03/01/1809"
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          if (validateDateFormat(value)) {
+                            setFormData({...formData, data_decesso: value});
+                          }
+                        }}
+                        placeholder="es. (1809) o 03/01/1809"
+                        className={!validateDateFormat(formData.data_decesso) ? "border-red-500" : ""}
                         required
                       />
+                      <p className="text-xs text-gray-500 mt-1">Formato: solo anno (1809) o data completa 03/01/1809</p>
                     </div>
                   </div>
 
@@ -357,6 +391,27 @@ export default function Home() {
                         value={formData.cognome_coniuge}
                         onChange={(e) => setFormData({...formData, cognome_coniuge: e.target.value})}
                       />
+                    </div>
+                  </div>
+
+                  {/* Controllo Visibilità */}
+                  <div className="border-t pt-4">
+                    <div className="flex items-center space-x-3">
+                      <input
+                        type="checkbox"
+                        id="visibile"
+                        checked={formData.visibile}
+                        onChange={(e) => setFormData({...formData, visibile: e.target.checked})}
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      />
+                      <div>
+                        <Label htmlFor="visibile" className="text-sm font-medium text-gray-900 cursor-pointer">
+                          Visibile al pubblico
+                        </Label>
+                        <p className="text-xs text-gray-500">
+                          Se attivato, questa persona sarà visibile nella ricerca pubblica
+                        </p>
+                      </div>
                     </div>
                   </div>
 
@@ -416,9 +471,9 @@ export default function Home() {
           <div className="p-6 border-b border-gray-200">
             <div className="flex items-center gap-2 mb-2">
               <Search className="w-5 h-5 text-gray-600" />
-              <h2 className="text-lg font-medium text-gray-900">Ricerca Persone</h2>
+              <h2 className="text-lg font-medium text-gray-900">Ricerca persone nell'archivio</h2>
             </div>
-            <p className="text-sm text-gray-600">Cerca nel registro storico dei defunti</p>
+     
           </div>
           
           <div className="p-6">
@@ -588,9 +643,10 @@ export default function Home() {
                   <Table className="enhanced-table">
                     <TableHeader>
                       <TableRow>
-                        <TableHead className="w-1/3">Nome</TableHead>
-                        <TableHead className="w-1/3">Cognome</TableHead>
-                        <TableHead className="w-1/3">Nascita</TableHead>
+                        <TableHead className="w-1/4">Nome</TableHead>
+                        <TableHead className="w-1/4">Cognome</TableHead>
+                        <TableHead className="w-1/4">Nascita</TableHead>
+                        <TableHead className="w-20">Visibilità</TableHead>
                         <TableHead className="w-24">Dettagli</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -613,6 +669,15 @@ export default function Home() {
                           <TableCell>
                             <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-blue-50 text-blue-700 border-blue-200">
                               {persona.nascita || "Data sconosciuta"}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
+                              persona.visibile 
+                                ? 'bg-green-100 text-green-800' 
+                                : 'bg-red-100 text-red-800'
+                            }`}>
+                              {persona.visibile ? 'Pubblico' : '🔒 Privato'}
                             </span>
                           </TableCell>
                           <TableCell>
@@ -710,6 +775,15 @@ export default function Home() {
               <DialogTitle className="text-xl font-semibold text-gray-900">
                 Scheda - {selectedPersona?.nome} {selectedPersona?.cognome}
               </DialogTitle>
+              <div className="mt-2">
+                <span className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ${
+                  selectedPersona?.visibile 
+                    ? 'bg-green-100 text-green-800' 
+                    : 'bg-red-100 text-red-800'
+                }`}>
+                  {selectedPersona?.visibile ? 'Visibile al pubblico' : '🔒 Solo amministratori'}
+                </span>
+              </div>
             </div>
           </DialogHeader>
           

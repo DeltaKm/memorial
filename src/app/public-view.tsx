@@ -126,11 +126,9 @@ export default function PublicView() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Search className="w-5 h-5" />
-              Ricerca Persone
+              Ricerca persone nell'archivio
             </CardTitle>
-            <CardDescription>
-            Cerca nel registro storico dei defunti
-            </CardDescription>
+
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="semplice" className="w-full">
