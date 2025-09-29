@@ -352,14 +352,17 @@ export default function PublicView() {
       {/* Detail View Dialog */}
       <Dialog open={isDetailDialogOpen} onOpenChange={setIsDetailDialogOpen}>
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <User className="w-5 h-5" />
-              Dettagli Completi - {selectedPersona?.nome} {selectedPersona?.cognome}
-            </DialogTitle>
-            <DialogDescription>
-              Informazioni complete dal registro storico del 1809
-            </DialogDescription>
+          <DialogHeader className="text-center">
+            <div className="flex flex-col items-center gap-4 mb-4">
+              <img 
+                src="/cropped-caiazzo-stemma-250.png" 
+                alt="Stemma Comune di Caiazzo" 
+                className="w-16 h-16 object-contain"
+              />
+              <DialogTitle className="text-xl font-semibold text-gray-900">
+                Scheda - {selectedPersona?.nome} {selectedPersona?.cognome}
+              </DialogTitle>
+            </div>
           </DialogHeader>
           
           {selectedPersona && (
@@ -372,25 +375,52 @@ export default function PublicView() {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label className="text-sm font-medium text-gray-600">Nome Completo</Label>
+                    <Label className="text-sm font-medium text-gray-600">Nome - Cognome</Label>
                     <p className="text-lg font-semibold text-gray-900 mt-1">
                       {selectedPersona.nome} {selectedPersona.cognome}
                     </p>
                   </div>
-                  <div>
-                    <Label className="text-sm font-medium text-gray-600">Data di Nascita</Label>
-                    <div className="text-lg text-gray-900 mt-1">
-                      <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-green-50 text-green-700 border-green-200">
-                        {selectedPersona.nascita || "Data sconosciuta"}
-                      </span>
-                    </div>
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium text-gray-600">Data di Decesso</Label>
-                    <div className="text-lg text-gray-900 mt-1">
-                      <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-red-50 text-red-700 border-red-200">
-                        {selectedPersona.data_decesso || "Data sconosciuta"}
-                      </span>
+                  <div className="md:col-span-2">
+                    <Label className="text-sm font-medium text-gray-600">Date e Luoghi</Label>
+                    <div className="flex items-center gap-3 mt-2 flex-wrap">
+                      {/* Data di Decesso */}
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-medium text-gray-500">Decesso:</span>
+                        <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-red-50 text-red-700 border-red-200">
+                          {selectedPersona.data_decesso || "Non specificata"}
+                        </span>
+                      </div>
+                      
+                      {/* Luogo Decesso */}
+                      {selectedPersona.luogo_decesso && (
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-medium text-gray-500">in</span>
+                          <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-red-50 text-red-700 border-red-200">
+                            {selectedPersona.luogo_decesso}
+                          </span>
+                        </div>
+                      )}
+                      
+                      {/* Divisore */}
+                      <div className="h-4 w-px bg-gray-300 mx-2"></div>
+                      
+                      {/* Data di Nascita */}
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-medium text-gray-500">Nascita:</span>
+                        <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-green-50 text-green-700 border-green-200">
+                          {selectedPersona.nascita || "Non specificata"}
+                        </span>
+                      </div>
+                      
+                      {/* Luogo Nascita */}
+                      {selectedPersona.luogo_nascita && (
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-medium text-gray-500">in</span>
+                          <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-green-50 text-green-700 border-green-200">
+                            {selectedPersona.luogo_nascita}
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
