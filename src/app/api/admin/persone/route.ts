@@ -3,6 +3,7 @@ import { getDatabase } from '@/lib/mongodb';
 import { PersonaDefunta, PersonaDefuntaCreate, SearchResponse, SearchParams } from '@/types/persona';
 import { generateId } from '@/lib/utils';
 
+// API ADMIN - Mostra TUTTI i record (anche quelli non visibili)
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -26,11 +27,8 @@ export async function GET(request: NextRequest) {
     const db = await getDatabase();
     const collection = db.collection('persone_defunte');
 
-    // Build query
+    // Build query - NESSUN FILTRO VISIBILITÀ per admin
     const filter: Record<string, unknown> = {};
-    
-    // FILTRO VISIBILITÀ: Solo record visibili per la vista pubblica
-    filter.visibile = true;
 
     // General search across multiple fields
     if (params.ricerca) {
@@ -106,7 +104,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error('Error fetching persone:', error);
+    console.error('Error fetching persone (admin):', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -152,7 +150,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(createdPersona, { status: 201 });
   } catch (error) {
-    console.error('Error creating persona:', error);
+    console.error('Error creating persona (admin):', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

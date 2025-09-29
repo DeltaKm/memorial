@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Search, Users, User, Eye, ChevronLeft, ChevronRight, Heart } from "lucide-react";
+import { Search, Users, User, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 import { PersonaDefunta } from "@/types/persona";
 
 const API = '/api';
@@ -96,14 +96,25 @@ export default function PublicView() {
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
-            <img 
-              src="/cropped-caiazzo-stemma-250.png" 
-              alt="Stemma Caiazzo" 
-              className="w-16 h-16 object-contain"
-            />
+            <div className="text-center">
+              <img 
+                src="/cropped-caiazzo-stemma-250.png" 
+                alt="Stemma Caiazzo" 
+                className="w-16 h-16 object-contain mx-auto"
+              />
+              <p className="text-xs text-gray-600 mt-1">Città di Caiazzo</p>
+            </div>
             <div className="absolute left-1/2 transform -translate-x-1/2 text-center">
               <h1 className="text-3xl font-bold text-gray-900">Radici</h1>
-              <p className="text-gray-600">Registro storico dei defunti</p>
+              <p className="text-gray-600">Archivio e Memorie dei Defunti</p>
+            </div>
+            <div className="text-center">
+              <img 
+                src="/Logo-Italea-blu.svg" 
+                alt="Logo Italea" 
+                className="w-16 h-16 object-contain mx-auto"
+              />
+              <p className="text-xs text-gray-600 mt-[-15px]">Il viaggio verso le tue radici</p>
             </div>
           </div>
         </div>
@@ -378,13 +389,12 @@ export default function PublicView() {
                     <Label className="text-sm font-medium text-gray-600">Data di Decesso</Label>
                     <div className="text-lg text-gray-900 mt-1">
                       <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-red-50 text-red-700 border-red-200">
-                        {selectedPersona.decesso}
+                        {selectedPersona.data_decesso || "Data sconosciuta"}
                       </span>
                     </div>
                   </div>
                 </div>
               </div>
-
               {/* Informazioni Familiari */}
               <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-6 rounded-lg">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
@@ -419,8 +429,8 @@ export default function PublicView() {
                   
                   {/* Coniuge */}
                   <div className="space-y-2 md:col-span-2">
-                    <Label className="text-sm font-medium text-gray-600 flex items-center gap-1">
-                      <Heart className="w-4 h-4" />
+                    <Label className="text-sm font-medium text-gray-600 flex items-baseline gap-1">
+                      <span className="text-lg leading-none">⚭</span>
                       Coniuge
                     </Label>
                     <p className="text-base text-gray-900 bg-white p-3 rounded border">
@@ -433,9 +443,12 @@ export default function PublicView() {
                 </div>
               </div>
 
-              {/* Record ID */}
-              <div className="flex justify-between items-center pt-4 border-t">
+              {/* Registro ID e Record ID */}
+              <div className="pt-4 border-t space-y-2">
                 <div className="text-xs text-gray-500">
+                  Registro ID: {selectedPersona.registro || "Non specificato"}
+                </div>
+                <div className="text-xs text-gray-500 font-mono">
                   Record ID: {selectedPersona.id}
                 </div>
               </div>
@@ -447,9 +460,9 @@ export default function PublicView() {
       {/* Footer */}
       <footer className="bg-white border-t mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="text-center text-gray-600">
-            <p>Registro Storico dei Defunti</p>
-            <p className="text-sm text-gray-400 mt-1">Powered by CMH</p>
+          <div className="flex justify-between items-center text-gray-600">
+            <p>Città di Caiazzo Radici ©</p>
+            <p className="text-sm text-gray-400">Powered by CMH</p>
           </div>
         </div>
       </footer>

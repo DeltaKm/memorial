@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Radici - Registro Storico dei Defunti",
-  description: "Sistema di gestione per il registro storico dei defunti",
+  title: "Radici - Archivio e Memorie dei Defunti",
+  description: "Archivio e Memorie dei Defunti",
   icons: {
     icon: "/cropped-caiazzo-stemma-250.png",
     shortcut: "/cropped-caiazzo-stemma-250.png",

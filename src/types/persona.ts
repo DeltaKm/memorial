@@ -1,43 +1,61 @@
 export interface PersonaDefunta {
   _id: string;
   id: string;
+  anno?: number;
   nome: string;
   cognome: string;
-  decesso: string;
-  nascita: string;
   padre?: string;
-  nome_madre?: string;
-  cognome_madre?: string;
-  nome_coniuge?: string;
-  cognome_coniuge?: string;
+  data_decesso: string;  // era 'decesso'
+  luogo_decesso?: string;
+  nascita: string;
+  luogo_nascita?: string;
+  eta?: string;
+  nome_madre?: string;   // mapping da 'Nome Madre'
+  cognome_madre?: string; // mapping da 'Cognome Madre'
+  nome_coniuge?: string; // mapping da 'Nome_Cs'
+  cognome_coniuge?: string; // mapping da 'Cognome_Cs'
+  registro?: string;     // nuovo campo
+  visibile: boolean;     // campo per controllo visibilità pubblica
   note?: string;
   created_at: Date;
   updated_at: Date;
 }
 
 export interface PersonaDefuntaCreate {
+  anno?: number;
   nome: string;
   cognome: string;
-  decesso: string;
-  nascita: string;
   padre?: string;
+  data_decesso: string;
+  luogo_decesso?: string;
+  nascita: string;
+  luogo_nascita?: string;
+  eta?: string;
   nome_madre?: string;
   cognome_madre?: string;
   nome_coniuge?: string;
   cognome_coniuge?: string;
+  registro?: string;
+  visibile: boolean;
   note?: string;
 }
 
 export interface PersonaDefuntaUpdate {
+  anno?: number;
   nome?: string;
   cognome?: string;
-  decesso?: string;
-  nascita?: string;
   padre?: string;
+  data_decesso?: string;
+  luogo_decesso?: string;
+  nascita?: string;
+  luogo_nascita?: string;
+  eta?: string;
   nome_madre?: string;
   cognome_madre?: string;
   nome_coniuge?: string;
   cognome_coniuge?: string;
+  registro?: string;
+  visibile?: boolean;
 }
 
 export interface SearchResponse {

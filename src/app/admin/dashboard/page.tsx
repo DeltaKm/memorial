@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Search, Plus, Edit, Trash2, Users, Calendar, Heart, User, Eye, ChevronLeft, ChevronRight, Upload, LogOut } from "lucide-react";
+import { Search, Plus, Edit, Trash2, Users, User, Eye, ChevronLeft, ChevronRight, Upload, LogOut } from "lucide-react";
 import { PersonaDefunta, PersonaDefuntaCreate, SearchResponse } from "@/types/persona";
 
 const API = "/api";
@@ -20,7 +20,7 @@ export default function Home() {
   const { data: session } = useSession();
   const [persone, setPersone] = useState<PersonaDefunta[]>([]);
   const [loading, setLoading] = useState(false);
-  const [stats, setStats] = useState<{totalPersone: number; personeWith1809: number; personeWithPadre: number; personeWithMadre: number; personeWithConiuge: number}>({totalPersone: 0, personeWith1809: 0, personeWithPadre: 0, personeWithMadre: 0, personeWithConiuge: 0});
+  const [stats, setStats] = useState<{totalPersone: number; personeWithPadre: number; personeWithMadre: number; personeWithConiuge: number}>({totalPersone: 0, personeWithPadre: 0, personeWithMadre: 0, personeWithConiuge: 0});
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -45,15 +45,21 @@ export default function Home() {
   });
 
   const [formData, setFormData] = useState<PersonaDefuntaCreate>({
+    anno: undefined,
     nome: "",
     cognome: "",
-    decesso: "",
-    nascita: "",
     padre: "",
+    data_decesso: "",
+    luogo_decesso: "",
+    nascita: "",
+    luogo_nascita: "",
+    eta: "",
     nome_madre: "",
     cognome_madre: "",
     nome_coniuge: "",
     cognome_coniuge: "",
+    registro: "",
+    visibile: true,
     note: ""
   });
 
@@ -83,7 +89,7 @@ export default function Home() {
 
   const loadStats = async () => {
     try {
-      const response = await axios.get(`${API}/persone/stats`);
+      const response = await axios.get('/api/persone/stats');
       setStats(response.data);
     } catch (error) {
       console.error("Errore nel caricamento delle statistiche:", error);
@@ -134,15 +140,21 @@ export default function Home() {
 
   const resetForm = () => {
     setFormData({
+      anno: undefined,
       nome: "",
       cognome: "",
-      decesso: "",
-      nascita: "",
       padre: "",
+      data_decesso: "",
+      luogo_decesso: "",
+      nascita: "",
+      luogo_nascita: "",
+      eta: "",
       nome_madre: "",
       cognome_madre: "",
       nome_coniuge: "",
       cognome_coniuge: "",
+      registro: "",
+      visibile: true,
       note: ""
     });
   };
@@ -198,62 +210,56 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-      {/* Header bianco come originale */}
+      {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
-            <img 
-              src="/cropped-caiazzo-stemma-250.png" 
-              alt="Stemma Caiazzo" 
-              className="w-16 h-16 object-contain"
-            />
+            <div className="text-center">
+              <img 
+                src="/cropped-caiazzo-stemma-250.png" 
+                alt="Stemma Caiazzo" 
+                className="w-16 h-16 object-contain mx-auto"
+              />
+              <p className="text-xs text-gray-600 mt-1">Città di Caiazzo</p>
+            </div>
             <div className="absolute left-1/2 transform -translate-x-1/2 text-center">
               <h1 className="text-3xl font-bold text-gray-900">Dashboard Admin - Radici</h1>
-              <p className="text-gray-600 mt-1">Sistema di gestione del registro storico dei defunti</p>
+              <p className="text-gray-600 mt-1">Archivio e Memorie dei Defunti</p>
             </div>
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                onClick={() => signOut({ callbackUrl: '/admin' })}
-                className="bg-red-50 hover:bg-red-100 text-red-700 border-red-200 flex items-center gap-2"
-              >
-                <LogOut className="w-4 h-4" />
-                Esci
-              </Button>
-              {/* Pulsante Import Excel - Commentato temporaneamente */}
-              {/* 
-              <div className="relative">
-                <input
-                  type="file"
-                  accept=".xlsx,.xls"
-                  onChange={handleExcelImport}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                  disabled={loading}
-                />
-                <Button
-                  variant="outline"
-                  disabled={loading}
-                  className="bg-green-50 hover:bg-green-100 text-green-700 border-green-200"
+            <div className="text-center">
+              <img 
+                src="/Logo-Italea-blu.svg" 
+                alt="Logo Italea" 
+                className="w-16 h-16 object-contain mx-auto"
+              />
+              <p className="text-xs text-gray-600 mt-[-15px]">Il viaggio verso le tue radici</p>
+            </div>
+          </div>
+          
+          {/* Buttons section below header */}
+          <div className="flex justify-center gap-3 mt-4 pt-4 border-t border-gray-100">
+            <Button
+              variant="outline"
+              onClick={() => signOut({ callbackUrl: '/admin' })}
+              className="bg-red-50 hover:bg-red-100 text-red-700 border-red-200 flex items-center gap-2"
+            >
+              <LogOut className="w-4 h-4" />
+              Esci
+            </Button>
+            
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button 
+                  onClick={() => {
+                    setEditingPersona(null);
+                    resetForm();
+                  }}
+                  className="bg-indigo-600 hover:bg-indigo-700"
                 >
-                  <Upload className="w-4 h-4 mr-2" />
-                  Importa Excel
+                  <Plus className="w-4 h-4 mr-2" />
+                  Aggiungi Persona
                 </Button>
-              </div>
-              */}
-
-              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button 
-                    onClick={() => {
-                      setEditingPersona(null);
-                      resetForm();
-                    }}
-                    className="bg-indigo-600 hover:bg-indigo-700"
-                  >
-                    <Plus className="w-4 h-4 mr-2" />
-                    Aggiungi Persona
-                  </Button>
-                </DialogTrigger>
+              </DialogTrigger>
                 <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white">
                   <DialogHeader>
                     <DialogTitle>
@@ -296,11 +302,11 @@ export default function Home() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="decesso">Data/Anno di Decesso *</Label>
+                      <Label htmlFor="data_decesso">Data/Anno di Decesso *</Label>
                       <Input
-                        id="decesso"
-                        value={formData.decesso}
-                        onChange={(e) => setFormData({...formData, decesso: e.target.value})}
+                        id="data_decesso"
+                        value={formData.data_decesso}
+                        onChange={(e) => setFormData({...formData, data_decesso: e.target.value})}
                         placeholder="es. 03/01/1809"
                         required
                       />
@@ -358,9 +364,8 @@ export default function Home() {
                     {editingPersona ? "Aggiorna" : "Aggiungi"} Persona
                   </Button>
                 </form>
-                </DialogContent>
-              </Dialog>
-            </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </div>
@@ -379,15 +384,6 @@ export default function Home() {
           </Card>
           <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-700">Anno 1809</CardTitle>
-              <Calendar className="h-4 w-4 text-blue-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-900">{stats.personeWith1809}</div>
-            </CardContent>
-          </Card>
-          <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-gray-700">Con Padre</CardTitle>
               <User className="h-4 w-4 text-green-600" />
             </CardHeader>
@@ -397,8 +393,17 @@ export default function Home() {
           </Card>
           <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-gray-700">Con Madre</CardTitle>
+              <Users className="h-4 w-4 text-purple-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-gray-900">{stats.personeWithMadre}</div>
+            </CardContent>
+          </Card>
+          <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-gray-700">Con Coniuge</CardTitle>
-              <Heart className="h-4 w-4 text-red-600" />
+              <span className="text-lg leading-none">⚭</span>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-gray-900">{stats.personeWithConiuge}</div>
@@ -732,7 +737,7 @@ export default function Home() {
                     <Label className="text-sm font-medium text-gray-600">Data di Decesso</Label>
                     <div className="text-lg text-gray-900 mt-1">
                       <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-red-50 text-red-700 border-red-200">
-                        {selectedPersona.decesso}
+                        {selectedPersona.data_decesso}
                       </span>
                     </div>
                   </div>
@@ -773,8 +778,8 @@ export default function Home() {
                   
                   {/* Coniuge */}
                   <div className="space-y-2 md:col-span-2">
-                    <Label className="text-sm font-medium text-gray-600 flex items-center gap-1">
-                      <Heart className="w-4 h-4" />
+                    <Label className="text-sm font-medium text-gray-600 flex items-baseline gap-1">
+                      <span className="text-lg leading-none">⚭</span>
                       Coniuge
                     </Label>
                     <div className="text-base text-gray-900 bg-white p-3 rounded border">
@@ -789,8 +794,13 @@ export default function Home() {
 
               {/* Azioni */}
               <div className="flex justify-between items-center pt-4 border-t">
-                <div className="text-xs text-gray-500">
-                  Record ID: {selectedPersona._id || selectedPersona.id || 'N/A'}
+                <div className="space-y-1">
+                  <div className="text-xs text-gray-500">
+                    Registro ID: {selectedPersona.registro || "Non specificato"}
+                  </div>
+                  <div className="text-xs text-gray-500 font-mono">
+                    Record ID: {selectedPersona._id || selectedPersona.id || 'N/A'}
+                  </div>
                 </div>
                 <div className="flex gap-2">
                   <Button
@@ -799,15 +809,21 @@ export default function Home() {
                       setIsDetailDialogOpen(false);
                       setEditingPersona(selectedPersona);
                       setFormData({
+                        anno: selectedPersona.anno,
                         nome: selectedPersona.nome,
                         cognome: selectedPersona.cognome,
-                        decesso: selectedPersona.decesso,
-                        nascita: selectedPersona.nascita || "",
                         padre: selectedPersona.padre || "",
+                        data_decesso: selectedPersona.data_decesso,
+                        luogo_decesso: selectedPersona.luogo_decesso || "",
+                        nascita: selectedPersona.nascita || "",
+                        luogo_nascita: selectedPersona.luogo_nascita || "",
+                        eta: selectedPersona.eta || "",
                         nome_madre: selectedPersona.nome_madre || "",
                         cognome_madre: selectedPersona.cognome_madre || "",
                         nome_coniuge: selectedPersona.nome_coniuge || "",
                         cognome_coniuge: selectedPersona.cognome_coniuge || "",
+                        registro: selectedPersona.registro || "",
+                        visibile: selectedPersona.visibile,
                         note: selectedPersona.note || ""
                       });
                       setIsDialogOpen(true);
@@ -871,9 +887,9 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-white border-t mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="text-center text-gray-600">
-            <p>Registro Storico dei Defunti</p>
-            <p className="text-sm text-gray-400 mt-1">Powered by CMH</p>
+          <div className="flex justify-between items-center text-gray-600">
+            <p>Città di Caiazzo Radici ©</p>
+            <p className="text-sm text-gray-400">Powered by CMH</p>
           </div>
         </div>
       </footer>
