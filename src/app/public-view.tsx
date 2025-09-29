@@ -493,9 +493,9 @@ export default function PublicView() {
       {/* Footer */}
       <footer className="bg-white border-t mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex justify-between items-center text-gray-600">
+          <div className="flex justify-between items-center text-black">
             <p>Città di Caiazzo Radici ©</p>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-black">
               Powered by{' '}
               <a 
                 href="https://cmh.it/" 

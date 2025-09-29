@@ -31,11 +31,7 @@ export default withAuth(
     const allowedPaths = [
       '/maintenance',
       '/admin',
-      '/api',
-      '/_next',
-      '/favicon.ico',
-      '/cropped-caiazzo-stemma-250.png',
-      '/Logo-Italea-blu.svg'
+      '/api'
     ];
     
     const isAllowedPath = allowedPaths.some(path => 
@@ -46,9 +42,17 @@ export default withAuth(
     if (!isAllowedPath) {
       const maintenanceEnabled = await isMaintenanceMode(req);
       
-      // Se la manutenzione è attiva, reindirizza
+      // Se la manutenzione è attiva
       if (maintenanceEnabled) {
-        return NextResponse.redirect(new URL('/maintenance', req.url));
+        // Controlla se c'è un cookie di bypass valido
+        const bypassCookie = req.cookies.get('maintenance_bypass');
+        
+        if (!bypassCookie || !bypassCookie.value) {
+          // Nessun cookie di bypass, reindirizza alla manutenzione
+          return NextResponse.redirect(new URL('/maintenance', req.url));
+        }
+        
+        // Cookie presente, permetti l'accesso (il token viene validato lato client)
       }
     }
     

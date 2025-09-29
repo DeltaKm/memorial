@@ -1,6 +1,45 @@
+'use client';
+
 import Image from 'next/image';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function MaintenancePage() {
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const router = useRouter();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/maintenance/bypass', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Imposta un cookie per bypassare la manutenzione
+        document.cookie = `maintenance_bypass=${data.token}; path=/; max-age=3600`; // 1 ora
+        router.push('/');
+      } else {
+        setError('Password non corretta');
+      }
+    } catch (error) {
+      setError('Errore di connessione');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
       <div className="text-center">
@@ -37,14 +76,39 @@ export default function MaintenancePage() {
             <h3 className="text-xl font-semibold text-gray-800 mb-2">
             Maintenance
             </h3>
-            <p className="text-gray-600">
+            <p className="text-black">
               Stiamo lavorando per migliorare la tua esperienza. 
               Torna presto per accedere all'archivio storico.
             </p>
           </div>
           
+          {/* Form di accesso */}
+          <form onSubmit={handleLogin} className="mt-6 border-t pt-4">
+            <h4 className="text-sm font-medium text-gray-700 mb-3">Accesso Autorizzato</h4>
+            <div className="flex flex-col gap-2">
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password di accesso"
+                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                disabled={isLoading}
+              />
+              {error && (
+                <p className="text-red-600 text-xs">{error}</p>
+              )}
+              <button
+                type="submit"
+                disabled={isLoading || !password.trim()}
+                className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isLoading ? 'Verifica...' : 'Accedi'}
+              </button>
+            </div>
+          </form>
+          
           {/* Footer */}
-          <div className="text-xs text-gray-400 border-t pt-4">
+          <div className="text-xs text-black border-t pt-4 mt-4">
             Powered by{' '}
             <a 
               href="https://cmh.it/" 

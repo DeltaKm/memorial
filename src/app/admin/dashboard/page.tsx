@@ -281,29 +281,37 @@ export default function Home() {
             </div>
           </div>
           
-          {/* Buttons section below header */}
-          <div className="flex justify-center gap-3 mt-4 pt-4 border-t border-gray-100">
-            <Button
-              variant="outline"
-              onClick={toggleMaintenanceMode}
-              className={`flex items-center gap-2 ${
-                maintenanceMode 
-                  ? 'bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200' 
-                  : 'bg-green-50 hover:bg-green-100 text-green-700 border-green-200'
-              }`}
-            >
-              <div className={`w-2 h-2 rounded-full ${maintenanceMode ? 'bg-orange-500' : 'bg-green-500'}`}></div>
-              {maintenanceMode ? 'Disattiva Manutenzione' : 'Attiva Manutenzione'}
-            </Button>
+          {/* Sezione pulsanti - layout con posizionamento assoluto per centrare */}
+          <div className="relative mt-4 pt-4 border-t border-gray-100">
+            {/* Pulsanti a sinistra (allineati con logo Italea) */}
+            <div className="absolute left-0 flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={toggleMaintenanceMode}
+                className={`flex items-center gap-2 text-xs ${
+                  maintenanceMode 
+                    ? 'bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200' 
+                    : 'bg-green-50 hover:bg-green-100 text-green-700 border-green-200'
+                }`}
+              >
+                <div className={`w-2 h-2 rounded-full ${maintenanceMode ? 'bg-orange-500' : 'bg-green-500'}`}></div>
+                {maintenanceMode ? 'Disattiva Manutenzione' : 'Attiva Manutenzione'}
+              </Button>
+              
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => signOut({ callbackUrl: '/admin' })}
+                className="bg-white hover:bg-red-100 text-red-700 border-red-100 flex items-center gap-2 text-xs"
+              >
+                <LogOut className="w-3 h-3" />
+                Esci
+              </Button>
+            </div>
             
-            <Button
-              variant="outline"
-              onClick={() => signOut({ callbackUrl: '/admin' })}
-              className="bg-red-50 hover:bg-red-100 text-red-700 border-red-200 flex items-center gap-2"
-            >
-              <LogOut className="w-4 h-4" />
-              Esci
-            </Button>
+            {/* Pulsante Aggiungi Persona perfettamente centrato */}
+            <div className="flex justify-center">
             
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
@@ -312,13 +320,13 @@ export default function Home() {
                     setEditingPersona(null);
                     resetForm();
                   }}
-                  className="bg-indigo-600 hover:bg-indigo-700"
+                  className="bg-black hover:bg-stone-900  text-white"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Aggiungi Persona
                 </Button>
               </DialogTrigger>
-                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white">
+              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white">
                   <DialogHeader>
                     <DialogTitle>
                       {editingPersona ? "Radici - Modifica Persona" : "Radici - Aggiungi Persona"}
@@ -459,7 +467,8 @@ export default function Home() {
                 </form>
               </DialogContent>
             </Dialog>
-          </div>
+            </div>  {/* Chiusura div flex justify-center */}
+          </div>    {/* Chiusura div relative */}
         </div>
       </div>
 
@@ -521,7 +530,7 @@ export default function Home() {
                   onClick={() => setActiveTab('semplice')}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
                     activeTab === 'semplice'
-                      ? 'border-indigo-500 text-indigo-600'
+                      ? 'border-black text-black'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                   }`}
                 >
@@ -531,7 +540,7 @@ export default function Home() {
                   onClick={() => setActiveTab('avanzata')}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
                     activeTab === 'avanzata'
-                      ? 'border-indigo-500 text-indigo-600'
+                      ? 'border-black text-black'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                   }`}
                 >
@@ -633,7 +642,7 @@ export default function Home() {
                 <div className="flex gap-2">
                   <button
                     onClick={handleAdvancedSearch}
-                    className="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex items-center"
+                    className="px-4 py-2 bg-black text-white rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex items-center"
                   >
                     <Search className="w-4 h-4 mr-2" />
                     Ricerca Avanzata
@@ -1034,9 +1043,9 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-white border-t mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex justify-between items-center text-gray-600">
+          <div className="flex justify-between items-center text-black">
             <p>Città di Caiazzo Radici ©</p>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-black">
               Powered by{' '}
               <a 
                 href="https://cmh.it/" 
