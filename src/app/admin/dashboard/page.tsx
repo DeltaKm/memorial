@@ -284,7 +284,7 @@ export default function Home() {
               {/* Titolo principale sotto */}
               <div>
                 <h1 className="text-xl font-bold text-gray-900">Admin - Radici</h1>
-                <p className="text-sm text-gray-600">Archivio e Memorie dei Defunti</p>
+                <p className="text-sm text-gray-600">Archivio e Memorie</p>
               </div>
             </div>
           </div>
@@ -301,7 +301,7 @@ export default function Home() {
             </div>
             <div className="text-center">
               <h1 className="text-3xl font-bold text-gray-900">Dashboard Admin - Radici</h1>
-              <p className="text-gray-600 mt-1">Archivio e Memorie dei Defunti</p>
+              <p className="text-gray-600 mt-1">Archivio e Memorie</p>
             </div>
             <div className="text-center">
               <img 
@@ -543,6 +543,16 @@ export default function Home() {
                         onChange={(e) => setFormData({...formData, cognome_coniuge: e.target.value})}
                       />
                     </div>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="registro">Registro / Numero di riferimento</Label>
+                    <Input
+                      id="registro"
+                      value={formData.registro}
+                      onChange={(e) => setFormData({...formData, registro: e.target.value})}
+                      placeholder="Es. Registro 12, Pag. 45"
+                    />
                   </div>
 
                   {/* Controllo Visibilità */}

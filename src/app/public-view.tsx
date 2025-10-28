@@ -120,7 +120,7 @@ export default function PublicView() {
               {/* Titolo principale sotto */}
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">Radici</h1>
-                <p className="text-sm text-gray-600">Archivio e Memorie dei Defunti</p>
+                <p className="text-sm text-gray-600">Archivio e Memorie</p>
               </div>
             </div>
           </div>
@@ -137,7 +137,7 @@ export default function PublicView() {
             </div>
             <div className="text-center">
               <h1 className="text-3xl font-bold text-gray-900">Radici</h1>
-              <p className="text-gray-600">Archivio e Memorie dei Defunti</p>
+              <p className="text-gray-600">Archivio e Memorie</p>
             </div>
             <div className="text-center">
               <img 
