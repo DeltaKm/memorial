@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Search, Plus, Edit, Trash2, Users, User, Eye, ChevronLeft, ChevronRight, Upload, LogOut } from "lucide-react";
 import { PersonaDefunta, PersonaDefuntaCreate, SearchResponse } from "@/types/persona";
+import { formatRegistroDisplay } from "@/lib/utils";
 
 const API = "/api";
 
@@ -1143,7 +1144,7 @@ export default function Home() {
                 {/* Info IDs */}
                 <div className="space-y-1">
                   <div className="text-xs text-gray-500">
-                    Registro ID: {selectedPersona.registro || "N.d."}
+                    Registro: {formatRegistroDisplay(selectedPersona.anno, selectedPersona.registro)}
                   </div>
                   <div className="text-xs text-gray-500 font-mono">
                     Record ID: {selectedPersona._id || selectedPersona.id || 'N/A'}

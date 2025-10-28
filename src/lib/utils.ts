@@ -21,3 +21,20 @@ export function generateId(): string {
     return v.toString(16);
   });
 }
+
+export function formatRegistroDisplay(
+  anno?: number | null,
+  registro?: string | null
+): string {
+  const trimmed = registro?.trim();
+
+  if (!trimmed) {
+    return 'N.d.';
+  }
+
+  if (anno !== undefined && anno !== null) {
+    return `${anno}-Def.${trimmed}`;
+  }
+
+  return `Def.${trimmed}`;
+}
