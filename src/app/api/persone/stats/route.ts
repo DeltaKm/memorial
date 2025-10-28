@@ -1,8 +1,19 @@
 import { NextResponse } from 'next/server';
 import { getDatabase } from '@/lib/mongodb';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 export async function GET() {
   try {
+    const session = await getServerSession(authOptions);
+    const userRole = (session?.user as { role?: string } | undefined)?.role;
+    if (userRole !== 'admin') {
+      return NextResponse.json(
+        { error: 'Accesso non autorizzato' },
+        { status: 401 }
+      );
+    }
+
     const db = await getDatabase();
     const collection = db.collection('persone_defunte');
 

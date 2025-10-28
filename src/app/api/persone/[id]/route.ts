@@ -2,12 +2,23 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getDatabase } from '@/lib/mongodb';
 import { PersonaDefuntaUpdate } from '@/types/persona';
 import { ObjectId } from 'mongodb';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await getServerSession(authOptions);
+    const userRole = (session?.user as { role?: string } | undefined)?.role;
+    if (userRole !== 'admin') {
+      return NextResponse.json(
+        { error: 'Accesso non autorizzato' },
+        { status: 401 }
+      );
+    }
+
     const { id } = await params;
     const db = await getDatabase();
     const collection = db.collection('persone_defunte');
@@ -40,6 +51,15 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await getServerSession(authOptions);
+    const userRole = (session?.user as { role?: string } | undefined)?.role;
+    if (userRole !== 'admin') {
+      return NextResponse.json(
+        { error: 'Accesso non autorizzato' },
+        { status: 401 }
+      );
+    }
+
     const { id } = await params;
     const body: PersonaDefuntaUpdate = await request.json();
     
@@ -92,6 +112,15 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await getServerSession(authOptions);
+    const userRole = (session?.user as { role?: string } | undefined)?.role;
+    if (userRole !== 'admin') {
+      return NextResponse.json(
+        { error: 'Accesso non autorizzato' },
+        { status: 401 }
+      );
+    }
+
     const { id } = await params;
     const db = await getDatabase();
     const collection = db.collection('persone_defunte');

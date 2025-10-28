@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getDatabase } from '@/lib/mongodb';
 import { PersonaDefunta, PersonaDefuntaCreate, SearchResponse, SearchParams } from '@/types/persona';
 import { generateId } from '@/lib/utils';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 export async function GET(request: NextRequest) {
   try {
@@ -24,15 +26,27 @@ export async function GET(request: NextRequest) {
       admin: searchParams.get('admin') === 'true' || false,
     };
 
+    const session = await getServerSession(authOptions);
+    const userRole = (session?.user as { role?: string } | undefined)?.role;
+    const isAdmin = userRole === 'admin';
+
+    if (params.admin && !isAdmin) {
+      return NextResponse.json(
+        { error: 'Accesso non autorizzato' },
+        { status: 401 }
+      );
+    }
+
     const db = await getDatabase();
     const collection = db.collection('persone_defunte');
 
     // Build query
     const filter: Record<string, unknown> = {};
-    
+    const includeHidden = params.admin && isAdmin;
+
     // FILTRO VISIBILITÀ: Solo record visibili per la vista pubblica
-    // Se è una richiesta admin, mostra tutte le persone
-    if (!params.admin) {
+    // Se è una richiesta admin autorizzata, mostra tutte le persone
+    if (!includeHidden) {
       filter.visibile = true;
     }
 
@@ -120,6 +134,15 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await getServerSession(authOptions);
+    const userRole = (session?.user as { role?: string } | undefined)?.role;
+    if (userRole !== 'admin') {
+      return NextResponse.json(
+        { error: 'Accesso non autorizzato' },
+        { status: 401 }
+      );
+    }
+
     const body: PersonaDefuntaCreate = await request.json();
     
     const db = await getDatabase();

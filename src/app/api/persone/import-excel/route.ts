@@ -3,9 +3,20 @@ import { getDatabase } from '@/lib/mongodb';
 import { PersonaDefunta } from '@/types/persona';
 import { cleanField, generateId } from '@/lib/utils';
 import * as XLSX from 'xlsx';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await getServerSession(authOptions);
+    const userRole = (session?.user as { role?: string } | undefined)?.role;
+    if (userRole !== 'admin') {
+      return NextResponse.json(
+        { error: 'Accesso non autorizzato' },
+        { status: 401 }
+      );
+    }
+
     const db = await getDatabase();
     const collection = db.collection('persone_defunte');
 
@@ -38,13 +49,20 @@ export async function POST(request: NextRequest) {
         id: generateId(),
         nome: cleanField(row['Nome'] || row['nome']) || '',
         cognome: cleanField(row['Cognome'] || row['cognome']) || '',
-        decesso: cleanField(row['Decesso'] || row['decesso']) || '',
+        data_decesso: cleanField(row['Decesso'] || row['decesso']) || '',
         nascita: cleanField(row['Nascita'] || row['nascita']) || '',
         padre: cleanField(row['Padre'] || row['padre']) || undefined,
         nome_madre: cleanField(row['Nom Madre'] || row['nome_madre']) || undefined,
         cognome_madre: cleanField(row['Cogn Madre'] || row['cognome_madre']) || undefined,
         nome_coniuge: cleanField(row['Nom Cs'] || row['nome_coniuge']) || undefined,
         cognome_coniuge: cleanField(row['Cogn Cs'] || row['cognome_coniuge']) || undefined,
+        luogo_decesso: undefined,
+        luogo_nascita: undefined,
+        anno: undefined,
+        eta: undefined,
+        registro: undefined,
+        visibile: true,
+        note: undefined,
         created_at: new Date(),
         updated_at: new Date()
       };
