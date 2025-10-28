@@ -309,7 +309,7 @@ export default function PublicView() {
                               {persona.nome} {persona.cognome}
                             </h3>
                             <p className="text-sm text-gray-600 mt-1">
-                              Nascita: {persona.nascita || "Data sconosciuta"}
+                              Nascita: {persona.nascita || "N.d."}
                             </p>
                           </div>
                           <Button
@@ -355,7 +355,7 @@ export default function PublicView() {
                           </TableCell>
                           <TableCell>
                             <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-blue-50 text-blue-700 border-blue-200">
-                              {persona.nascita || "Data sconosciuta"}
+                              {persona.nascita || "N.d."}
                             </span>
                           </TableCell>
                           <TableCell>
@@ -502,7 +502,7 @@ export default function PublicView() {
                       <div className="text-center sm:text-left">
                         <Label className="text-xs font-medium text-gray-600 block mb-1">Data di decesso</Label>
                         <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-red-50 text-red-700 border-red-200">
-                          {selectedPersona.data_decesso || "Non specificata"}
+                          {selectedPersona.data_decesso || "N.d."}
                         </span>
                       </div>
                       
@@ -510,7 +510,7 @@ export default function PublicView() {
                       <div className="text-center sm:text-left">
                         <Label className="text-xs font-medium text-gray-600 block mb-1">Luogo di decesso</Label>
                         <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-red-50 text-red-700 border-red-200">
-                          {selectedPersona.luogo_decesso || "Non specificato"}
+                          {selectedPersona.luogo_decesso || "N.d."}
                         </span>
                       </div>
                     </div>
@@ -524,7 +524,7 @@ export default function PublicView() {
                       <div className="text-center sm:text-left">
                         <Label className="text-xs font-medium text-gray-600 block mb-1">Data di nascita</Label>
                         <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-green-50 text-green-700 border-green-200">
-                          {selectedPersona.nascita || "Non specificata"}
+                          {selectedPersona.nascita || "N.d."}
                         </span>
                       </div>
                       
@@ -532,7 +532,7 @@ export default function PublicView() {
                       <div className="text-center sm:text-left">
                         <Label className="text-xs font-medium text-gray-600 block mb-1">Luogo di nascita</Label>
                         <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-green-50 text-green-700 border-green-200">
-                          {selectedPersona.luogo_nascita || "Non specificato"}
+                          {selectedPersona.luogo_nascita || "N.d."}
                         </span>
                       </div>
                     </div>
@@ -553,7 +553,7 @@ export default function PublicView() {
                       Padre
                     </Label>
                     <p className="text-base text-gray-900 bg-white p-3 rounded border">
-                      {selectedPersona.padre || "Informazione non disponibile"}
+                      {selectedPersona.padre || "N.d."}
                     </p>
                   </div>
                   
@@ -566,7 +566,7 @@ export default function PublicView() {
                     <p className="text-base text-gray-900 bg-white p-3 rounded border">
                       {selectedPersona.nome_madre || selectedPersona.cognome_madre 
                         ? `${selectedPersona.nome_madre || ""} ${selectedPersona.cognome_madre || ""}`.trim()
-                        : "Informazione non disponibile"
+                        : "N.d."
                       }
                     </p>
                   </div>
@@ -580,7 +580,7 @@ export default function PublicView() {
                     <p className="text-base text-gray-900 bg-white p-3 rounded border">
                       {selectedPersona.nome_coniuge || selectedPersona.cognome_coniuge 
                         ? `${selectedPersona.nome_coniuge || ""} ${selectedPersona.cognome_coniuge || ""}`.trim()
-                        : "Informazione non disponibile"
+                        : "N.d."
                       }
                     </p>
                   </div>
@@ -590,7 +590,7 @@ export default function PublicView() {
               {/* Registro ID e Record ID */}
               <div className="pt-4 border-t space-y-2">
                 <div className="text-xs text-gray-500">
-                  Registro ID: {selectedPersona.registro || "Non specificato"}
+                  Registro ID: {selectedPersona.registro || "N.d."}
                 </div>
                 <div className="text-xs text-gray-500 font-mono">
                   Record ID: {selectedPersona.id}
