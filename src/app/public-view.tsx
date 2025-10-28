@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,10 +35,73 @@ export default function PublicView() {
     anno_nascita: "",
     anno_decesso: ""
   });
+  const [securityWarning, setSecurityWarning] = useState<string | null>(null);
+  const warningTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const showSecurityWarning = useCallback((message: string) => {
+    setSecurityWarning(message);
+    if (warningTimeoutRef.current) {
+      clearTimeout(warningTimeoutRef.current);
+    }
+    warningTimeoutRef.current = setTimeout(() => {
+      setSecurityWarning(null);
+    }, 3000);
+  }, []);
 
   useEffect(() => {
     loadPersone();
   }, [currentPage, searchTerm]);
+
+  useEffect(() => {
+    const handleContextMenu = (event: MouseEvent) => {
+      event.preventDefault();
+      showSecurityWarning('Copia tramite tasto destro non consentita su questa pagina.');
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const key = event.key.toLowerCase();
+      const isCtrlOrMeta = event.ctrlKey || event.metaKey;
+
+      if (
+        isCtrlOrMeta &&
+        (['c', 'x', 's', 'p', 'u'].includes(key) ||
+          (event.shiftKey && ['i', 'j', 'c'].includes(key)))
+      ) {
+        event.preventDefault();
+        showSecurityWarning('Combinazione di tasti disabilitata: il contenuto non può essere copiato o salvato.');
+      }
+
+      if (event.key === 'PrintScreen' || key === 'f12') {
+        showSecurityWarning('Cattura schermo disabilitata: il contenuto è protetto.');
+        try {
+          void navigator.clipboard?.writeText('');
+        } catch (error) {
+          // ignore clipboard errors (permissions / unsupported)
+        }
+      }
+    };
+
+    document.addEventListener('contextmenu', handleContextMenu);
+    document.addEventListener('keydown', handleKeyDown, { capture: true });
+
+    return () => {
+      document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('keydown', handleKeyDown, { capture: true } as EventListenerOptions);
+    };
+  }, [showSecurityWarning]);
+
+  useEffect(() => {
+    return () => {
+      if (warningTimeoutRef.current) {
+        clearTimeout(warningTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleClipboardEvent = (event: React.ClipboardEvent) => {
+    event.preventDefault();
+    showSecurityWarning('Copia/Incolla disabilitati: il contenuto è protetto su questa pagina.');
+  };
 
   const loadPersone = async () => {
     setLoading(true);
@@ -91,7 +154,23 @@ export default function PublicView() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <div
+      className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100"
+      onContextMenu={(event) => {
+        event.preventDefault();
+        showSecurityWarning('Copia tramite tasto destro non consentita su questa pagina.');
+      }}
+      onCopy={handleClipboardEvent}
+      onCut={handleClipboardEvent}
+      onPaste={handleClipboardEvent}
+    >
+      {securityWarning && (
+        <div className="pointer-events-none fixed inset-x-0 top-4 z-[45] flex justify-center">
+          <div className="rounded-md bg-black/85 px-4 py-2 text-sm text-white shadow-lg backdrop-blur-sm">
+            {securityWarning}
+          </div>
+        </div>
+      )}
       {/* Header - Mobile First Design */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
@@ -268,7 +347,7 @@ export default function PublicView() {
         </Card>
 
         {/* Results Table */}
-        <Card>
+        <Card className="select-none">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <span>Risultati della Ricerca</span>
@@ -465,7 +544,7 @@ export default function PublicView() {
 
       {/* Detail View Dialog */}
       <Dialog open={isDetailDialogOpen} onOpenChange={setIsDetailDialogOpen}>
-        <DialogContent className="w-full max-w-[95vw] sm:max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="w-full max-w-[95vw] sm:max-w-3xl max-h-[90vh] overflow-y-auto select-none">
           <DialogHeader className="text-center">
             <div className="flex flex-col items-center gap-4 mb-4">
               <img 
