@@ -45,6 +45,10 @@ export default function Home() {
     anno_nascita: "",
     anno_decesso: ""
   });
+  const [activeNavButton, setActiveNavButton] = useState<'prev' | 'next' | null>(null);
+
+  const handleNavButtonPress = (type: 'prev' | 'next') => setActiveNavButton(type);
+  const clearNavButtonState = () => setActiveNavButton(null);
 
   const [formData, setFormData] = useState<PersonaDefuntaCreate>({
     anno: undefined,
@@ -256,9 +260,9 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-gray-100">
       {/* Header - Mobile First Design */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           {/* Mobile Layout (Stack Verticale) */}
           <div className="block md:hidden">
@@ -402,7 +406,7 @@ export default function Home() {
                         setEditingPersona(null);
                         resetForm();
                       }}
-                      className="bg-black hover:bg-stone-900 text-white"
+                      className="bg-gray-800 hover:bg-gray-700 text-white border border-gray-800"
                     >
                       <Plus className="w-4 h-4 mr-2" />
                       Aggiungi Persona
@@ -577,8 +581,8 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <Button type="submit" className="w-full">
-                    {editingPersona ? "Aggiorna" : "Aggiungi"} Persona
+                  <Button type="submit" className="bg-gray-800 hover:bg-gray-700 text-white border border-gray-800">
+                    {editingPersona ? 'Salva Modifiche' : 'Crea Persona'}
                   </Button>
                 </form>
               </DialogContent>
@@ -628,153 +632,136 @@ export default function Home() {
         </div>
 
         {/* Sezione Ricerca */}
-        <div className="bg-white rounded-lg shadow-sm border mb-6">
-          <div className="p-6 border-b border-gray-200">
-            <div className="flex items-center gap-2 mb-2">
-              <Search className="w-5 h-5 text-gray-600" />
-              <h2 className="text-lg font-medium text-gray-900">Ricerca persone nell'archivio</h2>
-            </div>
-     
-          </div>
-          
-          <div className="p-6">
-            <div className="border-b border-gray-200 mb-6">
-              <nav className="-mb-px flex space-x-8">
-                <button
-                  onClick={() => setActiveTab('semplice')}
-                  className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === 'semplice'
-                      ? 'border-black text-black'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+        <Card className="mb-6 border border-gray-200 shadow-sm">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Search className="w-5 h-5" />
+              Ricerca persone nell'archivio
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Tabs
+              value={activeTab}
+              onValueChange={(value) => setActiveTab(value as 'semplice' | 'avanzata')}
+              className="w-full"
+            >
+              <TabsList className="grid w-full grid-cols-2 gap-2">
+                <TabsTrigger
+                  value="semplice"
+                  className="border border-transparent data-[state=active]:border-gray-800 data-[state=active]:bg-gray-800 data-[state=active]:text-white text-gray-700 transition-colors data-[state=inactive]:hover:bg-gray-600 data-[state=inactive]:hover:text-white data-[state=inactive]:hover:border-gray-600"
                 >
                   Ricerca Semplice
-                </button>
-                <button
-                  onClick={() => setActiveTab('avanzata')}
-                  className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === 'avanzata'
-                      ? 'border-black text-black'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                </TabsTrigger>
+                <TabsTrigger
+                  value="avanzata"
+                  className="border border-transparent data-[state=active]:border-gray-800 data-[state=active]:bg-gray-800 data-[state=active]:text-white text-gray-700 transition-colors data-[state=inactive]:hover:bg-gray-600 data-[state=inactive]:hover:text-white data-[state=inactive]:hover:border-gray-600"
                 >
                   Ricerca Avanzata
-                </button>
-              </nav>
-            </div>
+                </TabsTrigger>
+              </TabsList>
 
-            {activeTab === 'semplice' && (
-              <div className="space-y-4">
-                <div className="flex gap-4">
+              <TabsContent value="semplice" className="space-y-4">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                   <div className="flex-1">
-                    <input
-                      type="text"
+                    <Input
                       placeholder="Cerca per nome, cognome, padre, madre o coniuge..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 placeholder-gray-500"
+                      className="w-full h-12 text-base"
                     />
                   </div>
-                  <button
+                  <Button
                     onClick={loadPersone}
-                    className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex items-center"
+                    variant="outline"
+                    className="h-12 px-6 w-full sm:w-auto border border-gray-300 text-gray-700 transition-colors hover:bg-gray-700 hover:text-white hover:border-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex items-center justify-center"
                   >
                     <Search className="w-4 h-4 mr-2" />
                     Cerca
-                  </button>
+                  </Button>
                 </div>
-              </div>
-            )}
+              </TabsContent>
 
-            {activeTab === 'avanzata' && (
-              <div className="space-y-4">
+              <TabsContent value="avanzata" className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <input
-                    type="text"
+                  <Input
                     placeholder="Nome"
                     value={advancedSearch.nome}
-                    onChange={(e) => setAdvancedSearch({...advancedSearch, nome: e.target.value})}
-                    className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 placeholder-gray-500"
+                    onChange={(e) => setAdvancedSearch({ ...advancedSearch, nome: e.target.value })}
+                    className="h-11"
                   />
-                  <input
-                    type="text"
+                  <Input
                     placeholder="Cognome"
                     value={advancedSearch.cognome}
-                    onChange={(e) => setAdvancedSearch({...advancedSearch, cognome: e.target.value})}
-                    className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 placeholder-gray-500"
+                    onChange={(e) => setAdvancedSearch({ ...advancedSearch, cognome: e.target.value })}
+                    className="h-11"
                   />
-                  <input
-                    type="text"
+                  <Input
                     placeholder="Nome Padre"
                     value={advancedSearch.padre}
-                    onChange={(e) => setAdvancedSearch({...advancedSearch, padre: e.target.value})}
-                    className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 placeholder-gray-500"
+                    onChange={(e) => setAdvancedSearch({ ...advancedSearch, padre: e.target.value })}
+                    className="h-11"
                   />
-                  <input
-                    type="text"
+                  <Input
                     placeholder="Nome Madre"
                     value={advancedSearch.nome_madre}
-                    onChange={(e) => setAdvancedSearch({...advancedSearch, nome_madre: e.target.value})}
-                    className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 placeholder-gray-500"
+                    onChange={(e) => setAdvancedSearch({ ...advancedSearch, nome_madre: e.target.value })}
+                    className="h-11"
                   />
-                  <input
-                    type="text"
+                  <Input
                     placeholder="Cognome Madre"
                     value={advancedSearch.cognome_madre}
-                    onChange={(e) => setAdvancedSearch({...advancedSearch, cognome_madre: e.target.value})}
-                    className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 placeholder-gray-500"
+                    onChange={(e) => setAdvancedSearch({ ...advancedSearch, cognome_madre: e.target.value })}
+                    className="h-11"
                   />
-                  <input
-                    type="text"
+                  <Input
                     placeholder="Nome Coniuge"
                     value={advancedSearch.nome_coniuge}
-                    onChange={(e) => setAdvancedSearch({...advancedSearch, nome_coniuge: e.target.value})}
-                    className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 placeholder-gray-500"
+                    onChange={(e) => setAdvancedSearch({ ...advancedSearch, nome_coniuge: e.target.value })}
+                    className="h-11"
                   />
-                  <input
-                    type="text"
+                  <Input
                     placeholder="Cognome Coniuge"
                     value={advancedSearch.cognome_coniuge}
-                    onChange={(e) => setAdvancedSearch({...advancedSearch, cognome_coniuge: e.target.value})}
-                    className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 placeholder-gray-500"
+                    onChange={(e) => setAdvancedSearch({ ...advancedSearch, cognome_coniuge: e.target.value })}
+                    className="h-11"
                   />
-                  <input
-                    type="text"
+                  <Input
                     placeholder="Anno Nascita"
                     value={advancedSearch.anno_nascita}
-                    onChange={(e) => setAdvancedSearch({...advancedSearch, anno_nascita: e.target.value})}
-                    className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 placeholder-gray-500"
+                    onChange={(e) => setAdvancedSearch({ ...advancedSearch, anno_nascita: e.target.value })}
+                    className="h-11"
                   />
-                  <input
-                    type="text"
+                  <Input
                     placeholder="Anno Decesso"
                     value={advancedSearch.anno_decesso}
-                    onChange={(e) => setAdvancedSearch({...advancedSearch, anno_decesso: e.target.value})}
-                    className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 placeholder-gray-500"
+                    onChange={(e) => setAdvancedSearch({ ...advancedSearch, anno_decesso: e.target.value })}
+                    className="h-11"
                   />
                 </div>
-                <div className="flex gap-2">
-                  <button
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-2">
+                  <Button
                     onClick={handleAdvancedSearch}
-                    className="px-4 py-2 bg-black text-white rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex items-center"
+                    variant="outline"
+                    className="h-11 px-4 border border-gray-300 text-gray-700 transition-colors hover:bg-gray-700 hover:text-white hover:border-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex items-center justify-center"
                   >
                     <Search className="w-4 h-4 mr-2" />
                     Ricerca Avanzata
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     onClick={clearAdvancedSearch}
-                    className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    variant="outline"
+                    className="h-11 px-4 border border-gray-300 text-gray-700 transition-colors hover:bg-gray-700 hover:text-white hover:border-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
                     Pulisci Filtri
-                  </button>
+                  </Button>
                 </div>
-              </div>
-            )}
-          </div>
-        </div>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
 
         {/* Tabella Risultati - Stile Originale */}
-        <Card>
+        <Card className="border border-gray-200 shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center justify-between text-gray-900">
               <span>Risultati della Ricerca</span>
@@ -882,7 +869,7 @@ export default function Home() {
                             {persona.cognome}
                           </TableCell>
                           <TableCell>
-                            <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-blue-50 text-blue-700 border-blue-200">
+                            <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-gray-200 text-gray-800 border-gray-300">
                               {persona.nascita || "N.d."}
                             </span>
                           </TableCell>
@@ -904,7 +891,7 @@ export default function Home() {
                                 setSelectedPersona(persona);
                                 setIsDetailDialogOpen(true);
                               }}
-                              className="text-blue-600 hover:text-blue-800 hover:bg-blue-50"
+                              className="text-gray-700 hover:text-white hover:bg-gray-700"
                             >
                               <Eye className="w-4 h-4" />
                             </Button>
@@ -934,9 +921,28 @@ export default function Home() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => setCurrentPage(currentPage - 1)}
+                        onClick={() => {
+                          if (currentPage === 1) return;
+                          setCurrentPage(currentPage - 1);
+                          clearNavButtonState();
+                        }}
                         disabled={currentPage === 1}
-                        className="flex items-center gap-2 w-full sm:w-auto h-10 text-gray-700 border-gray-300 hover:bg-gray-50 disabled:opacity-50"
+                        className={`flex items-center gap-2 w-full sm:w-auto h-10 border transition-colors ${
+                          activeNavButton === 'prev'
+                            ? 'bg-gray-800 text-white border-gray-800 hover:bg-gray-800'
+                            : 'text-gray-700 border-gray-300 hover:bg-gray-600 hover:text-white hover:border-gray-600 disabled:opacity-50'
+                        }`}
+                        onMouseDown={() => handleNavButtonPress('prev')}
+                        onMouseUp={clearNavButtonState}
+                        onMouseLeave={clearNavButtonState}
+                        onTouchStart={() => handleNavButtonPress('prev')}
+                        onTouchEnd={clearNavButtonState}
+                        onKeyDown={(event) => {
+                          if (event.key === 'Enter' || event.key === ' ') {
+                            handleNavButtonPress('prev');
+                          }
+                        }}
+                        onKeyUp={clearNavButtonState}
                       >
                         <ChevronLeft className="w-4 h-4" />
                         Precedente
@@ -955,8 +961,8 @@ export default function Home() {
                                 onClick={() => setCurrentPage(pageNum)}
                                 className={`w-10 h-10 p-0 ${
                                   currentPage === pageNum 
-                                    ? "bg-black text-white border-black hover:bg-gray-800" 
-                                    : "text-gray-700 border-gray-300 hover:bg-gray-50"
+                                    ? "bg-gray-800 text-white border-gray-800 hover:bg-gray-800" 
+                                    : "text-gray-700 border-gray-300 hover:bg-gray-600 hover:text-white hover:border-gray-600"
                                 }`}
                               >
                                 {pageNum}
@@ -989,9 +995,28 @@ export default function Home() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => setCurrentPage(currentPage + 1)}
+                        onClick={() => {
+                          if (currentPage === totalPages) return;
+                          setCurrentPage(currentPage + 1);
+                          clearNavButtonState();
+                        }}
                         disabled={currentPage === totalPages}
-                        className="flex items-center gap-2 w-full sm:w-auto h-10 text-gray-700 border-gray-300 hover:bg-gray-50 disabled:opacity-50"
+                        className={`flex items-center gap-2 w-full sm:w-auto h-10 border transition-colors ${
+                          activeNavButton === 'next'
+                            ? 'bg-gray-800 text-white border-gray-800 hover:bg-gray-800'
+                            : 'text-gray-700 border-gray-300 hover:bg-gray-600 hover:text-white hover:border-gray-600 disabled:opacity-50'
+                        }`}
+                        onMouseDown={() => handleNavButtonPress('next')}
+                        onMouseUp={clearNavButtonState}
+                        onMouseLeave={clearNavButtonState}
+                        onTouchStart={() => handleNavButtonPress('next')}
+                        onTouchEnd={clearNavButtonState}
+                        onKeyDown={(event) => {
+                          if (event.key === 'Enter' || event.key === ' ') {
+                            handleNavButtonPress('next');
+                          }
+                        }}
+                        onKeyUp={clearNavButtonState}
                       >
                         Successiva
                         <ChevronRight className="w-4 h-4" />
@@ -1033,7 +1058,7 @@ export default function Home() {
           {selectedPersona && (
             <div className="space-y-4 sm:space-y-6 px-2 sm:px-0">
               {/* Informazioni Personali */}
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-lg">
+              <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-4 sm:p-6 rounded-lg border border-gray-200">
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <User className="w-5 h-5" />
                   Informazioni Personali
@@ -1052,7 +1077,7 @@ export default function Home() {
                       {/* Data di Decesso */}
                       <div className="text-center sm:text-left">
                         <Label className="text-xs font-medium text-gray-600 block mb-1">Data di decesso</Label>
-                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-red-50 text-red-700 border-red-200">
+                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
                           {selectedPersona.data_decesso || "N.d."}
                         </span>
                       </div>
@@ -1060,7 +1085,7 @@ export default function Home() {
                       {/* Luogo Decesso */}
                       <div className="text-center sm:text-left">
                         <Label className="text-xs font-medium text-gray-600 block mb-1">Luogo di decesso</Label>
-                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-red-50 text-red-700 border-red-200">
+                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
                           {selectedPersona.luogo_decesso || "N.d."}
                         </span>
                       </div>
@@ -1074,7 +1099,7 @@ export default function Home() {
                       {/* Data di Nascita */}
                       <div className="text-center sm:text-left">
                         <Label className="text-xs font-medium text-gray-600 block mb-1">Data di nascita</Label>
-                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-green-50 text-green-700 border-green-200">
+                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
                           {selectedPersona.nascita || "N.d."}
                         </span>
                       </div>
@@ -1082,7 +1107,7 @@ export default function Home() {
                       {/* Luogo Nascita */}
                       <div className="text-center sm:text-left">
                         <Label className="text-xs font-medium text-gray-600 block mb-1">Luogo di nascita</Label>
-                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-green-50 text-green-700 border-green-200">
+                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
                           {selectedPersona.luogo_nascita || "N.d."}
                         </span>
                       </div>
@@ -1092,7 +1117,7 @@ export default function Home() {
               </div>
 
               {/* Informazioni Familiari */}
-              <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-6 rounded-lg">
+              <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-4 sm:p-6 rounded-lg border border-gray-200">
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Users className="w-5 h-5" />
                   Informazioni Familiari
@@ -1178,7 +1203,7 @@ export default function Home() {
                       });
                       setIsDialogOpen(true);
                     }}
-                    className="flex items-center justify-center gap-2 w-full sm:w-auto"
+                    className="flex items-center justify-center gap-2 w-full sm:w-auto border border-gray-300 text-gray-700 transition-colors hover:bg-gray-700 hover:text-white hover:border-gray-700"
                   >
                     <Edit className="w-4 h-4" />
                     Modifica
@@ -1235,7 +1260,7 @@ export default function Home() {
       </Dialog>
 
       {/* Footer */}
-      <footer className="bg-white border-t mt-12">
+      <footer className="bg-white border-t border-gray-200 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex justify-between items-center text-black">
             <p>Città di Caiazzo Radici ©</p>

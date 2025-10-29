@@ -59,7 +59,7 @@ export default function AdminLogin() {
           <p className="text-gray-600">Accesso amministratore</p>
         </div>
 
-        <Card>
+        <Card className="border border-gray-200 shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Lock className="h-5 w-5" />
@@ -111,7 +111,7 @@ export default function AdminLogin() {
 
               <Button 
                 type="submit" 
-                className="w-full bg-blue-600 hover:bg-blue-700"
+                className="w-full bg-gray-800 hover:bg-gray-700 text-white border border-gray-800"
                 disabled={loading}
               >
                 {loading ? 'Accesso in corso...' : 'Accedi'}
@@ -121,13 +121,23 @@ export default function AdminLogin() {
             <div className="mt-6 text-center">
               <a 
                 href="/" 
-                className="text-sm text-blue-600 hover:text-blue-800 underline"
+                className="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded transition-colors hover:bg-gray-700 hover:text-white hover:border-gray-700"
               >
                 ← Torna alla vista pubblica
               </a>
               <div className="mt-4 pt-4 border-t border-gray-200">
-                <p className="text-xs text-gray-500">Registro Storico dei Defunti</p>
-                <p className="text-xs text-gray-400 mt-1">Powered by CMH</p>
+                <p className="text-xs text-gray-500">Radici - Archivio e Memorie</p>
+                <p className="text-xs text-gray-400 mt-1">
+                  Powered by{' '}
+                  <a 
+                    href="https://cmh.it/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-gray-700 hover:text-gray-900 hover:underline"
+                  >
+                    CMH
+                  </a>
+                </p>
               </div>
             </div>
           </CardContent>

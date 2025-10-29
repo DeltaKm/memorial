@@ -36,6 +36,7 @@ export default function PublicView() {
     anno_nascita: "",
     anno_decesso: ""
   });
+  const [activeNavButton, setActiveNavButton] = useState<'prev' | 'next' | null>(null);
   const [securityWarning, setSecurityWarning] = useState<string | null>(null);
   const warningTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -154,9 +155,12 @@ export default function PublicView() {
     setTimeout(loadPersone, 100);
   };
 
+  const handleNavButtonPress = (type: 'prev' | 'next') => setActiveNavButton(type);
+  const clearNavButtonState = () => setActiveNavButton(null);
+
   return (
     <div
-      className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100"
+      className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-gray-100"
       onContextMenu={(event) => {
         event.preventDefault();
         showSecurityWarning('Copia tramite tasto destro non consentita su questa pagina.');
@@ -173,7 +177,7 @@ export default function PublicView() {
         </div>
       )}
       {/* Header - Mobile First Design */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           {/* Mobile Layout (Stack Verticale) */}
           <div className="block md:hidden">
@@ -233,7 +237,7 @@ export default function PublicView() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Search Section */}
-        <Card className="mb-6">
+        <Card className="mb-6 border border-gray-200 shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Search className="w-5 h-5" />
@@ -243,9 +247,19 @@ export default function PublicView() {
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="semplice" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="semplice">Ricerca Semplice</TabsTrigger>
-                <TabsTrigger value="avanzata">Ricerca Avanzata</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 gap-2">
+                <TabsTrigger
+                  value="semplice"
+                  className="border border-transparent data-[state=active]:border-gray-800 data-[state=active]:bg-gray-800 data-[state=active]:text-white text-gray-700 transition-colors data-[state=inactive]:hover:bg-gray-600 data-[state=inactive]:hover:text-white data-[state=inactive]:hover:border-gray-600"
+                >
+                  Ricerca Semplice
+                </TabsTrigger>
+                <TabsTrigger
+                  value="avanzata"
+                  className="border border-transparent data-[state=active]:border-gray-800 data-[state=active]:bg-gray-800 data-[state=active]:text-white text-gray-700 transition-colors data-[state=inactive]:hover:bg-gray-600 data-[state=inactive]:hover:text-white data-[state=inactive]:hover:border-gray-600"
+                >
+                  Ricerca Avanzata
+                </TabsTrigger>
               </TabsList>
               
               <TabsContent value="semplice" className="space-y-4">
@@ -261,7 +275,7 @@ export default function PublicView() {
                   <Button 
                     onClick={loadPersone} 
                     variant="outline"
-                    className="h-12 px-6 w-full sm:w-auto"
+                    className="h-12 px-6 w-full sm:w-auto border border-gray-300 text-gray-700 transition-colors hover:bg-gray-700 hover:text-white hover:border-gray-700"
                   >
                     <Search className="w-4 h-4 mr-2" />
                     Cerca
@@ -329,7 +343,8 @@ export default function PublicView() {
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-2">
                   <Button 
                     onClick={handleAdvancedSearch}
-                    className="h-11 w-full sm:w-auto"
+                    variant="outline"
+                    className="h-11 w-full sm:w-auto border border-gray-300 text-gray-700 transition-colors hover:bg-gray-700 hover:text-white hover:border-gray-700"
                   >
                     <Search className="w-4 h-4 mr-2" />
                     Ricerca Avanzata
@@ -337,7 +352,7 @@ export default function PublicView() {
                   <Button 
                     onClick={clearAdvancedSearch} 
                     variant="outline"
-                    className="h-11 w-full sm:w-auto"
+                    className="h-11 w-full sm:w-auto border border-gray-300 text-gray-700 transition-colors hover:bg-gray-700 hover:text-white hover:border-gray-700"
                   >
                     Pulisci Filtri
                   </Button>
@@ -348,7 +363,7 @@ export default function PublicView() {
         </Card>
 
         {/* Results Table */}
-        <Card className="select-none">
+        <Card className="select-none border border-gray-200 shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <span>Risultati della Ricerca</span>
@@ -434,7 +449,7 @@ export default function PublicView() {
                             {persona.cognome}
                           </TableCell>
                           <TableCell>
-                            <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-blue-50 text-blue-700 border-blue-200">
+                            <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-gray-200 text-gray-800 border-gray-300">
                               {persona.nascita || "N.d."}
                             </span>
                           </TableCell>
@@ -446,7 +461,7 @@ export default function PublicView() {
                                 e.stopPropagation();
                                 handleViewDetails(persona);
                               }}
-                              className="text-blue-600 hover:text-blue-800 hover:bg-blue-50"
+                              className="text-gray-700 hover:text-white hover:bg-gray-700"
                             >
                               <Eye className="w-4 h-4" />
                             </Button>
@@ -460,7 +475,6 @@ export default function PublicView() {
                 {/* Pagination - Responsive */}
                 {totalPages > 1 && (
                   <div className="mt-6 pt-4 border-t space-y-4">
-                    {/* Info paginazione - Sempre visibile e centrata su mobile */}
                     <div className="text-center">
                       <div className="text-sm text-gray-600 font-medium">
                         Pagina {currentPage} di {totalPages}
@@ -469,22 +483,38 @@ export default function PublicView() {
                         {totalPersone} risultati totali
                       </div>
                     </div>
-                    
-                    {/* Controlli paginazione */}
+
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                      {/* Pulsante Precedente */}
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => setCurrentPage(currentPage - 1)}
+                        onClick={() => {
+                          if (currentPage === 1) return;
+                          setCurrentPage(currentPage - 1);
+                          clearNavButtonState();
+                        }}
                         disabled={currentPage === 1}
-                        className="flex items-center gap-2 w-full sm:w-auto h-10"
+                        className={`flex items-center gap-2 w-full sm:w-auto h-10 border transition-colors ${
+                          activeNavButton === 'prev'
+                            ? 'bg-gray-800 text-white border-gray-800 hover:bg-gray-800 hover:text-white'
+                            : 'text-gray-700 border-gray-300 hover:bg-gray-600 hover:text-white hover:border-gray-600 disabled:opacity-50'
+                        }`}
+                        onMouseDown={() => handleNavButtonPress('prev')}
+                        onMouseUp={clearNavButtonState}
+                        onMouseLeave={clearNavButtonState}
+                        onTouchStart={() => handleNavButtonPress('prev')}
+                        onTouchEnd={clearNavButtonState}
+                        onKeyDown={(event) => {
+                          if (event.key === 'Enter' || event.key === ' ') {
+                            handleNavButtonPress('prev');
+                          }
+                        }}
+                        onKeyUp={clearNavButtonState}
                       >
                         <ChevronLeft className="w-4 h-4" />
                         Precedente
                       </Button>
-                      
-                      {/* Numeri pagina - Solo su desktop */}
+
                       <div className="hidden sm:flex items-center gap-1">
                         {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                           const pageNum = Math.max(1, Math.min(currentPage - 2 + i, totalPages - 4)) + Math.min(i, 4);
@@ -495,7 +525,11 @@ export default function PublicView() {
                                 variant={currentPage === pageNum ? "default" : "outline"}
                                 size="sm"
                                 onClick={() => setCurrentPage(pageNum)}
-                                className="w-10 h-10 p-0"
+                                className={`w-10 h-10 p-0 ${
+                                  currentPage === pageNum
+                                    ? 'bg-gray-800 text-white border-gray-800 hover:bg-gray-800'
+                                    : 'text-gray-700 border-gray-300 hover:bg-gray-600 hover:text-white hover:border-gray-600'
+                                }`}
                               >
                                 {pageNum}
                               </Button>
@@ -504,8 +538,7 @@ export default function PublicView() {
                           return null;
                         })}
                       </div>
-                      
-                      {/* Input diretto pagina - Solo su mobile */}
+
                       <div className="flex sm:hidden items-center gap-2">
                         <span className="text-sm text-gray-600">Vai a:</span>
                         <input
@@ -522,14 +555,32 @@ export default function PublicView() {
                           className="w-16 h-8 text-center border border-gray-300 rounded text-sm"
                         />
                       </div>
-                      
-                      {/* Pulsante Successiva */}
+
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => setCurrentPage(currentPage + 1)}
+                        onClick={() => {
+                          if (currentPage === totalPages) return;
+                          setCurrentPage(currentPage + 1);
+                          clearNavButtonState();
+                        }}
                         disabled={currentPage === totalPages}
-                        className="flex items-center gap-2 w-full sm:w-auto h-10"
+                        className={`flex items-center gap-2 w-full sm:w-auto h-10 border transition-colors ${
+                          activeNavButton === 'next'
+                            ? 'bg-gray-800 text-white border-gray-800 hover:bg-gray-800 hover:text-white'
+                            : 'text-gray-700 border-gray-300 hover:bg-gray-600 hover:text-white hover:border-gray-600 disabled:opacity-50'
+                        }`}
+                        onMouseDown={() => handleNavButtonPress('next')}
+                        onMouseUp={clearNavButtonState}
+                        onMouseLeave={clearNavButtonState}
+                        onTouchStart={() => handleNavButtonPress('next')}
+                        onTouchEnd={clearNavButtonState}
+                        onKeyDown={(event) => {
+                          if (event.key === 'Enter' || event.key === ' ') {
+                            handleNavButtonPress('next');
+                          }
+                        }}
+                        onKeyUp={clearNavButtonState}
                       >
                         Successiva
                         <ChevronRight className="w-4 h-4" />
@@ -562,7 +613,7 @@ export default function PublicView() {
           {selectedPersona && (
             <div className="space-y-4 sm:space-y-6 px-2 sm:px-0">
               {/* Informazioni Personali */}
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6 rounded-lg">
+              <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-4 sm:p-6 rounded-lg border border-gray-200">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <User className="w-5 h-5" />
                   Informazioni Personali
@@ -581,7 +632,7 @@ export default function PublicView() {
                       {/* Data di Decesso */}
                       <div className="text-center sm:text-left">
                         <Label className="text-xs font-medium text-gray-600 block mb-1">Data di decesso</Label>
-                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-red-50 text-red-700 border-red-200">
+                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
                           {selectedPersona.data_decesso || "N.d."}
                         </span>
                       </div>
@@ -589,7 +640,7 @@ export default function PublicView() {
                       {/* Luogo Decesso */}
                       <div className="text-center sm:text-left">
                         <Label className="text-xs font-medium text-gray-600 block mb-1">Luogo di decesso</Label>
-                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-red-50 text-red-700 border-red-200">
+                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
                           {selectedPersona.luogo_decesso || "N.d."}
                         </span>
                       </div>
@@ -603,7 +654,7 @@ export default function PublicView() {
                       {/* Data di Nascita */}
                       <div className="text-center sm:text-left">
                         <Label className="text-xs font-medium text-gray-600 block mb-1">Data di nascita</Label>
-                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-green-50 text-green-700 border-green-200">
+                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
                           {selectedPersona.nascita || "N.d."}
                         </span>
                       </div>
@@ -611,7 +662,7 @@ export default function PublicView() {
                       {/* Luogo Nascita */}
                       <div className="text-center sm:text-left">
                         <Label className="text-xs font-medium text-gray-600 block mb-1">Luogo di nascita</Label>
-                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-green-50 text-green-700 border-green-200">
+                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
                           {selectedPersona.luogo_nascita || "N.d."}
                         </span>
                       </div>
@@ -620,7 +671,7 @@ export default function PublicView() {
                 </div>
               </div>
               {/* Informazioni Familiari */}
-              <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-4 sm:p-6 rounded-lg">
+              <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-4 sm:p-6 rounded-lg border border-gray-200">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Users className="w-5 h-5" />
                   Informazioni Familiari
@@ -682,7 +733,7 @@ export default function PublicView() {
       </Dialog>
 
       {/* Footer */}
-      <footer className="bg-white border-t mt-12">
+      <footer className="bg-white border-t border-gray-200 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex justify-between items-center text-black">
             <p>Città di Caiazzo Radici ©</p>
