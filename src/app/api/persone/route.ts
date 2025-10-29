@@ -106,6 +106,7 @@ export async function GET(request: NextRequest) {
         nascita: p.nascita,
         luogo_nascita: p.luogo_nascita,
         eta: p.eta,
+        data_matrimonio: p.data_matrimonio ?? null,
         nome_madre: p.nome_madre,
         cognome_madre: p.cognome_madre,
         nome_coniuge: p.nome_coniuge,
@@ -148,6 +149,8 @@ export async function POST(request: NextRequest) {
     const db = await getDatabase();
     const collection = db.collection('persone_defunte');
 
+    const normalizedDataMatrimonio = body.data_matrimonio?.trim() ? body.data_matrimonio.trim() : null;
+
     const persona = {
       id: generateId(),
       anno: body.anno,
@@ -159,6 +162,7 @@ export async function POST(request: NextRequest) {
       nascita: body.nascita,
       luogo_nascita: body.luogo_nascita,
       eta: body.eta,
+      data_matrimonio: normalizedDataMatrimonio,
       nome_madre: body.nome_madre,
       cognome_madre: body.cognome_madre,
       nome_coniuge: body.nome_coniuge,

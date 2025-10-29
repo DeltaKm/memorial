@@ -9,7 +9,8 @@
     "lint": "next lint",
     "import-excel": "tsx scripts/import-excel.ts",
     "import-excel:confirm": "NODE_ENV=development tsx scripts/import-excel.ts",
-    "normalize-registro": "tsx scripts/normalize-registro.ts"
+    "normalize-registro": "tsx scripts/normalize-registro.ts",
+    "db:add-data-matrimonio": "tsx scripts/add-data-matrimonio.ts"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",

@@ -10,6 +10,7 @@ export interface PersonaDefunta {
   nascita: string;
   luogo_nascita?: string;
   eta?: string;
+  data_matrimonio?: string | null;
   nome_madre?: string;   // mapping da 'Nome Madre'
   cognome_madre?: string; // mapping da 'Cognome Madre'
   nome_coniuge?: string; // mapping da 'Nome_Cs'
@@ -31,6 +32,7 @@ export interface PersonaDefuntaCreate {
   nascita: string;
   luogo_nascita?: string;
   eta?: string;
+  data_matrimonio?: string | null;
   nome_madre?: string;
   cognome_madre?: string;
   nome_coniuge?: string;
@@ -50,6 +52,7 @@ export interface PersonaDefuntaUpdate {
   nascita?: string;
   luogo_nascita?: string;
   eta?: string;
+  data_matrimonio?: string | null;
   nome_madre?: string;
   cognome_madre?: string;
   nome_coniuge?: string;

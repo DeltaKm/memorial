@@ -60,6 +60,7 @@ export default function Home() {
     nascita: "",
     luogo_nascita: "",
     eta: "",
+    data_matrimonio: "",
     nome_madre: "",
     cognome_madre: "",
     nome_coniuge: "",
@@ -155,10 +156,17 @@ export default function Home() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      const payload: PersonaDefuntaCreate = {
+        ...formData,
+        data_matrimonio: formData.data_matrimonio?.trim()
+          ? formData.data_matrimonio.trim()
+          : null,
+      };
+
       if (editingPersona) {
-        await axios.put(`${API}/persone/${editingPersona._id || editingPersona.id}`, formData);
+        await axios.put(`${API}/persone/${editingPersona._id || editingPersona.id}`, payload);
       } else {
-        await axios.post(`${API}/persone`, formData);
+        await axios.post(`${API}/persone`, payload);
       }
       setIsDialogOpen(false);
       setEditingPersona(null);
@@ -200,6 +208,7 @@ export default function Home() {
       nascita: "",
       luogo_nascita: "",
       eta: "",
+      data_matrimonio: "",
       nome_madre: "",
       cognome_madre: "",
       nome_coniuge: "",
@@ -548,6 +557,29 @@ export default function Home() {
                         onChange={(e) => setFormData({...formData, cognome_coniuge: e.target.value})}
                       />
                     </div>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="data_matrimonio">Data di matrimonio (opzionale)</Label>
+                    <Input
+                      id="data_matrimonio"
+                      value={formData.data_matrimonio ?? ""}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setFormData({ ...formData, data_matrimonio: value });
+                      }}
+                      placeholder="es. 1798 o 12/06/1798"
+                      className={
+                        formData.data_matrimonio && !validateDateFormat(formData.data_matrimonio)
+                          ? "border-red-500"
+                          : ""
+                      }
+                    />
+                    {formData.data_matrimonio && !validateDateFormat(formData.data_matrimonio) && (
+                      <p className="text-xs text-red-500 mt-1">
+                        Formato non valido. Usa anno (es. 1798) o giorno/mese/anno (es. 12/06/1798).
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -1063,54 +1095,45 @@ export default function Home() {
                   <User className="w-5 h-5" />
                   Informazioni Personali
                 </h3>
-                <div className="grid grid-cols-1 gap-4">
+                <div className="space-y-3">
                   <div>
                     <Label className="text-sm font-medium text-gray-600">Nome - Cognome</Label>
                     <div className="text-lg font-semibold text-gray-900 mt-1">
                       {selectedPersona.nome} {selectedPersona.cognome}
                     </div>
                   </div>
-                  {/* Sezione Decesso - Responsive */}
-                  <div className="space-y-3">
-                    <Label className="text-sm font-medium text-gray-600 block">Informazioni Decesso</Label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {/* Data di Decesso */}
-                      <div className="text-center sm:text-left">
-                        <Label className="text-xs font-medium text-gray-600 block mb-1">Data di decesso</Label>
-                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
-                          {selectedPersona.data_decesso || "N.d."}
-                        </span>
-                      </div>
-                      
-                      {/* Luogo Decesso */}
-                      <div className="text-center sm:text-left">
-                        <Label className="text-xs font-medium text-gray-600 block mb-1">Luogo di decesso</Label>
-                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
-                          {selectedPersona.luogo_decesso || "N.d."}
-                        </span>
-                      </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {/* Data di decesso */}
+                    <div className="space-y-1">
+                      <Label className="text-xs font-medium text-gray-600 block">Data di decesso</Label>
+                      <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
+                        {selectedPersona.data_decesso || "N.d."}
+                      </span>
                     </div>
-                  </div>
-                  
-                  {/* Sezione Nascita - Responsive */}
-                  <div className="space-y-3">
-                    <Label className="text-sm font-medium text-gray-600 block">Informazioni Nascita</Label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {/* Data di Nascita */}
-                      <div className="text-center sm:text-left">
-                        <Label className="text-xs font-medium text-gray-600 block mb-1">Data di nascita</Label>
-                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
-                          {selectedPersona.nascita || "N.d."}
-                        </span>
-                      </div>
-                      
-                      {/* Luogo Nascita */}
-                      <div className="text-center sm:text-left">
-                        <Label className="text-xs font-medium text-gray-600 block mb-1">Luogo di nascita</Label>
-                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
-                          {selectedPersona.luogo_nascita || "N.d."}
-                        </span>
-                      </div>
+
+                    {/* Luogo di decesso */}
+                    <div className="space-y-1">
+                      <Label className="text-xs font-medium text-gray-600 block">Luogo di decesso</Label>
+                      <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
+                        {selectedPersona.luogo_decesso || "N.d."}
+                      </span>
+                    </div>
+
+                    {/* Data di nascita */}
+                    <div className="space-y-1">
+                      <Label className="text-xs font-medium text-gray-600 block">Data di nascita</Label>
+                      <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
+                        {selectedPersona.nascita || "N.d."}
+                      </span>
+                    </div>
+
+                    {/* Luogo di nascita */}
+                    <div className="space-y-1">
+                      <Label className="text-xs font-medium text-gray-600 block">Luogo di nascita</Label>
+                      <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
+                        {selectedPersona.luogo_nascita || "N.d."}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -1122,43 +1145,54 @@ export default function Home() {
                   <Users className="w-5 h-5" />
                   Informazioni Familiari
                 </h3>
-                <div className="grid grid-cols-1 gap-6">
-                  {/* Padre */}
-                  <div className="space-y-2">
-                    <Label className="text-sm font-medium text-gray-600 flex items-center gap-1">
-                      <User className="w-4 h-4" />
-                      Padre
-                    </Label>
-                    <div className="text-base text-gray-900 bg-white p-3 rounded border">
-                      {selectedPersona.padre || "N.d."}
+                <div className="space-y-3">
+                  <Label className="text-sm font-medium text-gray-600 block">Parentela</Label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {/* Padre */}
+                    <div className="space-y-1">
+                      <Label className="text-xs font-medium text-gray-600 flex items-center gap-1">
+                        <User className="w-4 h-4" />
+                        Padre
+                      </Label>
+                      <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
+                        {selectedPersona.padre || "N.d."}
+                      </span>
                     </div>
-                  </div>
-                  
-                  {/* Madre */}
-                  <div className="space-y-2">
-                    <Label className="text-sm font-medium text-gray-600 flex items-center gap-1">
-                      <User className="w-4 h-4" />
-                      Madre
-                    </Label>
-                    <div className="text-base text-gray-900 bg-white p-3 rounded border">
-                      {selectedPersona.nome_madre || selectedPersona.cognome_madre 
-                        ? `${selectedPersona.nome_madre || ""} ${selectedPersona.cognome_madre || ""}`.trim()
-                        : "N.d."
-                      }
+
+                    {/* Madre */}
+                    <div className="space-y-1">
+                      <Label className="text-xs font-medium text-gray-600 flex items-center gap-1">
+                        <User className="w-4 h-4" />
+                        Madre
+                      </Label>
+                      <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
+                        {selectedPersona.nome_madre || selectedPersona.cognome_madre 
+                          ? `${selectedPersona.nome_madre || ""} ${selectedPersona.cognome_madre || ""}`.trim()
+                          : "N.d."
+                        }
+                      </span>
                     </div>
-                  </div>
-                  
-                  {/* Coniuge */}
-                  <div className="space-y-2 md:col-span-2">
-                    <Label className="text-sm font-medium text-gray-600 flex items-baseline gap-1">
-                      <span className="text-lg leading-none">⚭</span>
-                      Coniuge
-                    </Label>
-                    <div className="text-base text-gray-900 bg-white p-3 rounded border">
-                      {selectedPersona.nome_coniuge || selectedPersona.cognome_coniuge 
-                        ? `${selectedPersona.nome_coniuge || ""} ${selectedPersona.cognome_coniuge || ""}`.trim()
-                        : "N.d."
-                      }
+
+                    {/* Coniuge */}
+                    <div className="space-y-1">
+                      <Label className="text-xs font-medium text-gray-600 flex items-baseline gap-1">
+                        <span className="text-lg leading-none">⚭</span>
+                        Coniuge
+                      </Label>
+                      <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
+                        {selectedPersona.nome_coniuge || selectedPersona.cognome_coniuge 
+                          ? `${selectedPersona.nome_coniuge || ""} ${selectedPersona.cognome_coniuge || ""}`.trim()
+                          : "N.d."
+                        }
+                      </span>
+                    </div>
+
+                    {/* Data matrimonio */}
+                    <div className="space-y-1">
+                      <Label className="text-xs font-medium text-gray-600 block">Data di matrimonio</Label>
+                      <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
+                        {selectedPersona.data_matrimonio || "N.d."}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -1193,6 +1227,7 @@ export default function Home() {
                         nascita: selectedPersona.nascita || "",
                         luogo_nascita: selectedPersona.luogo_nascita || "",
                         eta: selectedPersona.eta || "",
+                        data_matrimonio: selectedPersona.data_matrimonio || "",
                         nome_madre: selectedPersona.nome_madre || "",
                         cognome_madre: selectedPersona.cognome_madre || "",
                         nome_coniuge: selectedPersona.nome_coniuge || "",

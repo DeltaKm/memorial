@@ -81,8 +81,14 @@ export async function PUT(
     // Prepare update data
     const updateData: Record<string, unknown> = {};
     Object.keys(body).forEach(key => {
-      if (body[key as keyof PersonaDefuntaUpdate] !== undefined) {
-        updateData[key] = body[key as keyof PersonaDefuntaUpdate];
+      const value = body[key as keyof PersonaDefuntaUpdate];
+      if (value !== undefined) {
+        if (key === 'data_matrimonio') {
+          const trimmed = typeof value === 'string' ? value.trim() : value;
+          updateData[key] = trimmed ? trimmed : null;
+        } else {
+          updateData[key] = value;
+        }
       }
     });
 
