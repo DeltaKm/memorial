@@ -394,7 +394,7 @@ export default function PublicView() {
                   {persone.map((persona) => (
                     <Card 
                       key={persona.id} 
-                      className="cursor-pointer hover:shadow-md transition-shadow border-l-4 border-l-blue-500"
+                      className="cursor-pointer hover:shadow-md transition-shadow border-l-4 border-l-black"
                       onClick={() => handleViewDetails(persona)}
                     >
                       <CardContent className="p-4">

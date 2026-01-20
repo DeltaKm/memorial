@@ -337,6 +337,16 @@ textarea:focus {
   background: #94a3b8;
 }
 
+@media (max-width: 640px) {
+  .custom-scroll {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .custom-scroll::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .info-label {
   color: #6b7280;
   font-size: 13px;

@@ -824,7 +824,7 @@ export default function Home() {
                   {persone.map((persona) => (
                     <Card 
                       key={persona._id || persona.id || `${persona.nome}-${persona.cognome}`}
-                      className="cursor-pointer hover:shadow-md transition-shadow border-l-4 border-l-indigo-500"
+                      className="cursor-pointer hover:shadow-md transition-shadow border-l-4 border-l-black"
                       onClick={() => {
                         setSelectedPersona(persona);
                         setIsDetailDialogOpen(true);
