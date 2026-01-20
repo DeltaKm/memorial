@@ -297,8 +297,8 @@ export default function Home() {
               </div>
               {/* Titolo principale sotto */}
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Admin - Radici</h1>
-                <p className="text-sm text-gray-600">Archivio e Memorie</p>
+                <h1 className="text-xl font-bold text-gray-900">Dashboard Admin</h1>
+                <p className="text-sm text-gray-600">Radici - Archivio e Memorie</p>
               </div>
             </div>
           </div>
@@ -314,8 +314,8 @@ export default function Home() {
               <p className="text-xs text-gray-600 mt-1">Città di Caiazzo</p>
             </div>
             <div className="text-center">
-              <h1 className="text-3xl font-bold text-gray-900">Dashboard Admin - Radici</h1>
-              <p className="text-gray-600 mt-1">Archivio e Memorie</p>
+              <h1 className="text-3xl font-bold text-gray-900">Dashboard Admin</h1>
+              <p className="text-gray-600 mt-1">Radici - Archivio e Memorie</p>
             </div>
             <div className="text-center">
               <img 
