@@ -596,17 +596,21 @@ export default function PublicView() {
 
       {/* Detail View Dialog */}
       <Dialog open={isDetailDialogOpen} onOpenChange={setIsDetailDialogOpen}>
-        <DialogContent className="w-full max-w-[95vw] sm:max-w-3xl max-h-[90vh] overflow-y-auto select-none">
-          <DialogHeader className="text-center">
-            <div className="flex flex-col items-center gap-4 mb-4">
-              <img 
-                src="/cropped-caiazzo-stemma-250.png" 
-                alt="Stemma Comune di Caiazzo" 
-                className="w-16 h-16 object-contain"
-              />
-              <DialogTitle className="text-lg sm:text-xl font-semibold text-gray-900 text-center px-2">
+        <DialogContent className="w-full max-w-[95vw] sm:max-w-3xl max-h-[90vh] overflow-y-auto select-none rounded-2xl custom-scroll">
+          <DialogHeader className="pb-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 items-center gap-3 sm:gap-4">
+              <div className="flex flex-col items-center sm:items-center text-center">
+                <img 
+                  src="/cropped-caiazzo-stemma-250.png" 
+                  alt="Stemma Comune di Caiazzo" 
+                  className="w-16 h-16 object-contain"
+                />
+                <p className="text-sm font-medium text-gray-600 mt-1">Città di Caiazzo</p>
+              </div>
+              <DialogTitle className="w-full text-center text-lg sm:text-xl font-semibold text-gray-900 px-2 whitespace-nowrap">
                 Scheda - {selectedPersona?.nome} {selectedPersona?.cognome}
               </DialogTitle>
+              <div className="hidden sm:block" />
             </div>
           </DialogHeader>
           
@@ -614,7 +618,7 @@ export default function PublicView() {
             <div className="space-y-4 sm:space-y-6 px-2 sm:px-0">
               {/* Informazioni Personali */}
               <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-4 sm:p-6 rounded-lg border border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <User className="w-5 h-5" />
                   Informazioni Personali
                 </h3>
@@ -663,12 +667,11 @@ export default function PublicView() {
               </div>
               {/* Informazioni Familiari */}
               <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-4 sm:p-6 rounded-lg border border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Users className="w-5 h-5" />
                   Informazioni Familiari
                 </h3>
                 <div className="space-y-3">
-                  <Label className="text-sm font-medium text-gray-600 block">Parentela</Label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {/* Padre */}
                     <div className="space-y-1">

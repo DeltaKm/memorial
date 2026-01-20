@@ -1,4 +1,4 @@
-#!/usr/bin/env tsx
+
 import { MongoClient } from 'mongodb';
 
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -17,7 +17,7 @@ const valoriDaNormalizzare = [
 
 async function normalizeRegistro() {
   if (!MONGODB_URI) {
-    console.error('❌ MONGODB_URI non è definita nelle variabili d\'ambiente');
+    console.error(' MONGODB_URI non è definita nelle variabili d\'ambiente');
     process.exit(1);
   }
 
@@ -49,10 +49,10 @@ async function normalizeRegistro() {
 
     const { matchedCount, modifiedCount } = await collection.updateMany(filtro, update);
 
-    console.log(`✅ Documenti trovati: ${matchedCount}`);
-    console.log(`✏️  Documenti aggiornati: ${modifiedCount}`);
+    console.log(`Documenti trovati: ${matchedCount}`);
+    console.log(`Documenti aggiornati: ${modifiedCount}`);
   } catch (error) {
-    console.error('❌ Errore durante la normalizzazione:', error);
+    console.error('Errore durante la normalizzazione:', error);
     process.exit(1);
   } finally {
     await client.close();
@@ -60,6 +60,6 @@ async function normalizeRegistro() {
 }
 
 normalizeRegistro().then(() => {
-  console.log('🏁 Normalizzazione completata');
+  console.log('Normalizzazione completata');
   process.exit(0);
 });
