@@ -1150,7 +1150,6 @@ export default function Home() {
                   Informazioni Familiari
                 </h3>
                 <div className="space-y-3">
-                  <Label className="text-sm font-medium text-gray-600 block">Parentela</Label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {/* Padre */}
                     <div className="space-y-1">
