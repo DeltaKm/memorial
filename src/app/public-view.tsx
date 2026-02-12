@@ -598,19 +598,31 @@ export default function PublicView() {
       <Dialog open={isDetailDialogOpen} onOpenChange={setIsDetailDialogOpen}>
         <DialogContent className="w-full max-w-[95vw] sm:max-w-3xl max-h-[90vh] overflow-y-auto select-none rounded-2xl custom-scroll">
           <DialogHeader className="pb-2">
-            <div className="grid grid-cols-1 sm:grid-cols-3 items-center gap-3 sm:gap-4">
-              <div className="flex flex-col items-center sm:items-center text-center">
-                <img 
-                  src="/cropped-caiazzo-stemma-250.png" 
-                  alt="Stemma Comune di Caiazzo" 
-                  className="w-16 h-16 object-contain"
-                />
-                <p className="text-sm font-medium text-gray-600 mt-1">Città di Caiazzo</p>
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col sm:grid sm:grid-cols-3 items-center gap-3 sm:gap-4">
+                <div className="flex flex-col items-center text-center">
+                  <img 
+                    src="/cropped-caiazzo-stemma-250.png" 
+                    alt="Stemma Comune di Caiazzo" 
+                    className="w-12 h-12 object-contain"
+                  />
+                  <p className="text-xs font-medium text-gray-600 mt-0.5">Città di Caiazzo</p>
+                </div>
+                <DialogTitle className="hidden sm:block w-full text-center text-lg sm:text-xl font-semibold text-gray-900 px-2 whitespace-nowrap">
+                  Scheda - {selectedPersona?.nome} {selectedPersona?.cognome}
+                </DialogTitle>
+                <div className="flex flex-col items-center text-center">
+                  <img 
+                    src="/Logo-Italea-blu.svg" 
+                    alt="Logo Italia" 
+                    className="w-12 h-12 object-contain"
+                  />
+                  <p className="text-xs text-gray-600 mt-[-15px]">Il viaggio verso le tue radici</p>
+                </div>
               </div>
-              <DialogTitle className="w-full text-center text-lg sm:text-xl font-semibold text-gray-900 px-2 whitespace-nowrap">
+              <DialogTitle className="sm:hidden w-full text-center text-lg font-semibold text-gray-900">
                 Scheda - {selectedPersona?.nome} {selectedPersona?.cognome}
               </DialogTitle>
-              <div className="hidden sm:block" />
             </div>
           </DialogHeader>
           
