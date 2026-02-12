@@ -17,6 +17,7 @@ export interface PersonaDefunta {
   cognome_coniuge?: string; // mapping da 'Cognome_Cs'
   registro?: string;     // nuovo campo
   visibile: boolean;     // campo per controllo visibilità pubblica
+  mostra_coniuge: boolean; // campo per controllo visibilità coniuge/matrimonio
   note?: string;
   created_at: Date;
   updated_at: Date;
@@ -39,6 +40,7 @@ export interface PersonaDefuntaCreate {
   cognome_coniuge?: string;
   registro?: string;
   visibile: boolean;
+  mostra_coniuge: boolean;
   note?: string;
 }
 
@@ -59,6 +61,7 @@ export interface PersonaDefuntaUpdate {
   cognome_coniuge?: string;
   registro?: string;
   visibile?: boolean;
+  mostra_coniuge?: boolean;
 }
 
 export interface SearchResponse {

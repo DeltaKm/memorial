@@ -62,6 +62,7 @@ export async function POST(request: NextRequest) {
         eta: undefined,
         registro: undefined,
         visibile: true,
+        mostra_coniuge: true,
         note: undefined,
         created_at: new Date(),
         updated_at: new Date()

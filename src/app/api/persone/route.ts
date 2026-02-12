@@ -113,6 +113,7 @@ export async function GET(request: NextRequest) {
         cognome_coniuge: p.cognome_coniuge,
         registro: p.registro,
         visibile: p.visibile,
+        mostra_coniuge: p.mostra_coniuge ?? true,
         note: p.note,
         created_at: p.created_at,
         updated_at: p.updated_at
@@ -169,6 +170,7 @@ export async function POST(request: NextRequest) {
       cognome_coniuge: body.cognome_coniuge,
       registro: body.registro,
       visibile: body.visibile,
+      mostra_coniuge: body.mostra_coniuge,
       note: body.note,
       created_at: new Date(),
       updated_at: new Date()

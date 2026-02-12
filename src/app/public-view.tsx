@@ -698,27 +698,31 @@ export default function PublicView() {
                       </span>
                     </div>
 
-                    {/* Coniuge */}
-                    <div className="space-y-1">
-                      <Label className="text-xs font-medium text-gray-600 flex items-baseline gap-1">
-                        <span className="text-lg leading-none">⚭</span>
-                        Coniuge
-                      </Label>
-                      <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
-                        {selectedPersona.nome_coniuge || selectedPersona.cognome_coniuge 
-                          ? `${selectedPersona.nome_coniuge || ""} ${selectedPersona.cognome_coniuge || ""}`.trim()
-                          : "N.d."
-                        }
-                      </span>
-                    </div>
+                    {/* Coniuge - mostrato solo se mostra_coniuge è true */}
+                    {selectedPersona.mostra_coniuge && (
+                      <div className="space-y-1">
+                        <Label className="text-xs font-medium text-gray-600 flex items-baseline gap-1">
+                          <span className="text-lg leading-none">⚭</span>
+                          Coniuge
+                        </Label>
+                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
+                          {selectedPersona.nome_coniuge || selectedPersona.cognome_coniuge 
+                            ? `${selectedPersona.nome_coniuge || ""} ${selectedPersona.cognome_coniuge || ""}`.trim()
+                            : "N.d."
+                          }
+                        </span>
+                      </div>
+                    )}
 
-                    {/* Data matrimonio */}
-                    <div className="space-y-1">
-                      <Label className="text-xs font-medium text-gray-600 block">Data di matrimonio</Label>
-                      <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
-                        {selectedPersona.data_matrimonio || "N.d."}
-                      </span>
-                    </div>
+                    {/* Data matrimonio - mostrato solo se mostra_coniuge è true */}
+                    {selectedPersona.mostra_coniuge && (
+                      <div className="space-y-1">
+                        <Label className="text-xs font-medium text-gray-600 block">Data di matrimonio</Label>
+                        <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
+                          {selectedPersona.data_matrimonio || "N.d."}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

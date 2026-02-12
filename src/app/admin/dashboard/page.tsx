@@ -67,6 +67,7 @@ export default function Home() {
     cognome_coniuge: "",
     registro: "",
     visibile: true,
+    mostra_coniuge: true,
     note: ""
   });
 
@@ -215,6 +216,7 @@ export default function Home() {
       cognome_coniuge: "",
       registro: "",
       visibile: true,
+      mostra_coniuge: true,
       note: ""
     });
   };
@@ -594,7 +596,7 @@ export default function Home() {
 
                   {/* Controllo Visibilità */}
                   <div className="border-t pt-4">
-                    <div className="flex items-center space-x-3">
+                    <div className="flex items-start gap-3">
                       <input
                         type="checkbox"
                         id="visibile"
@@ -608,6 +610,24 @@ export default function Home() {
                         </Label>
                         <p className="text-xs text-gray-500">
                           Se attivato, questa persona sarà visibile nella ricerca pubblica
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <input
+                        type="checkbox"
+                        id="mostra_coniuge"
+                        checked={formData.mostra_coniuge}
+                        onChange={(e) => setFormData({...formData, mostra_coniuge: e.target.checked})}
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      />
+                      <div>
+                        <Label htmlFor="mostra_coniuge" className="text-sm font-medium text-gray-900 cursor-pointer">
+                          Mostra informazioni coniuge
+                        </Label>
+                        <p className="text-xs text-gray-500">
+                          Se attivato, i campi coniuge e data matrimonio saranno visibili al pubblico
                         </p>
                       </div>
                     </div>
@@ -1181,6 +1201,9 @@ export default function Home() {
                       <Label className="text-xs font-medium text-gray-600 flex items-baseline gap-1">
                         <span className="text-lg leading-none">⚭</span>
                         Coniuge
+                        {!selectedPersona.mostra_coniuge && (
+                          <span className="text-xs text-red-600 ml-2">(nascosto al pubblico)</span>
+                        )}
                       </Label>
                       <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
                         {selectedPersona.nome_coniuge || selectedPersona.cognome_coniuge 
@@ -1192,7 +1215,12 @@ export default function Home() {
 
                     {/* Data matrimonio */}
                     <div className="space-y-1">
-                      <Label className="text-xs font-medium text-gray-600 block">Data di matrimonio</Label>
+                      <Label className="text-xs font-medium text-gray-600 flex items-baseline gap-1">
+                        Data di matrimonio
+                        {!selectedPersona.mostra_coniuge && (
+                          <span className="text-xs text-red-600 ml-2">(nascosto al pubblico)</span>
+                        )}
+                      </Label>
                       <span className="inline-flex items-center rounded-md border px-3 py-1 text-sm font-semibold bg-gray-200 text-gray-800 border-gray-300">
                         {selectedPersona.data_matrimonio || "N.d."}
                       </span>
@@ -1237,6 +1265,7 @@ export default function Home() {
                         cognome_coniuge: selectedPersona.cognome_coniuge || "",
                         registro: selectedPersona.registro || "",
                         visibile: selectedPersona.visibile,
+                        mostra_coniuge: selectedPersona.mostra_coniuge,
                         note: selectedPersona.note || ""
                       });
                       setIsDialogOpen(true);
