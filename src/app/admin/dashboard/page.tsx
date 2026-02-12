@@ -279,7 +279,7 @@ export default function Home() {
           <div className="block md:hidden">
             <div className="text-center space-y-4">
               {/* Loghi affiancati sopra */}
-              <div className="flex items-center justify-center gap-8">
+              <div className="flex flex-col items-center gap-0 mt-6">
                 <div className="text-center">
                   <img 
                     src="/cropped-caiazzo-stemma-250.png" 
@@ -290,11 +290,10 @@ export default function Home() {
                 </div>
                 <div className="text-center">
                   <img 
-                    src="/Logo-Italea-blu.svg" 
+                    src="/RGB_Italea_Logo_Payoff_1_Blu.png" 
                     alt="Logo Italea" 
-                    className="w-14 h-14 object-contain mx-auto"
+                    className="w-52 h-52 object-contain mx-auto"
                   />
-                  <p className="text-xs text-gray-600 mt-1">Il viaggio verso le tue radici</p>
                 </div>
               </div>
               {/* Titolo principale sotto */}
@@ -321,11 +320,10 @@ export default function Home() {
             </div>
             <div className="text-center">
               <img 
-                src="/Logo-Italea-blu.svg" 
+                src="/RGB_Italea_Logo_Payoff_1_Blu.png" 
                 alt="Logo Italea" 
-                className="w-16 h-16 object-contain mx-auto"
+                className="w-56 h-56 object-contain mx-auto"
               />
-              <p className="text-xs text-gray-600 mt-[-15px]">Il viaggio verso le tue radici</p>
             </div>
           </div>
           

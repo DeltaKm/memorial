@@ -182,29 +182,29 @@ export default function PublicView() {
           {/* Mobile Layout (Stack Verticale) */}
           <div className="block md:hidden">
             <div className="text-center space-y-4">
-              {/* Loghi affiancati sopra */}
-              <div className="flex items-center justify-center gap-8">
-                <div className="text-center">
-                  <img 
-                    src="/cropped-caiazzo-stemma-250.png" 
-                    alt="Stemma Caiazzo" 
-                    className="w-14 h-14 object-contain mx-auto"
-                  />
-                  <p className="text-xs text-gray-600 mt-1">Città di Caiazzo</p>
+              <div className="block sm:hidden">
+                <div className="flex flex-col items-center gap-0 px-4 mt-6">
+                  <div className="text-center">
+                    <img 
+                      src="/cropped-caiazzo-stemma-250.png" 
+                      alt="Stemma Caiazzo" 
+                      className="w-14 h-14 object-contain mx-auto"
+                    />
+                    <p className="text-xs text-gray-600 mt-1">Città di Caiazzo</p>
+                  </div>
+                  <div className="text-center">
+                    <img 
+                      src="/RGB_Italea_Logo_Payoff_1_Blu.png" 
+                      alt="Logo Italea" 
+                      className="w-52 h-52 object-contain mx-auto"
+                    />
+                  </div>
                 </div>
-                <div className="text-center">
-                  <img 
-                    src="/Logo-Italea-blu.svg" 
-                    alt="Logo Italea" 
-                    className="w-14 h-14 object-contain mx-auto"
-                  />
-                  <p className="text-xs text-gray-600 mt-1">Il viaggio verso le tue radici</p>
+                {/* Titolo principale sotto */}
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">Radici</h1>
+                  <p className="text-sm text-gray-600">Archivio e Memorie</p>
                 </div>
-              </div>
-              {/* Titolo principale sotto */}
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Radici</h1>
-                <p className="text-sm text-gray-600">Archivio e Memorie</p>
               </div>
             </div>
           </div>
@@ -225,11 +225,10 @@ export default function PublicView() {
             </div>
             <div className="text-center">
               <img 
-                src="/Logo-Italea-blu.svg" 
+                src="/RGB_Italea_Logo_Payoff_1_Blu.png" 
                 alt="Logo Italea" 
-                className="w-16 h-16 object-contain mx-auto"
+                className="w-56 h-56 object-contain mx-auto"
               />
-              <p className="text-xs text-gray-600 mt-[-15px]">Il viaggio verso le tue radici</p>
             </div>
           </div>
         </div>
