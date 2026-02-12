@@ -279,7 +279,7 @@ export default function Home() {
           <div className="block md:hidden">
             <div className="text-center space-y-4">
               {/* Loghi affiancati sopra */}
-              <div className="flex flex-col items-center gap-0 mt-6">
+              <div className="flex items-center justify-center gap-8 mt-6">
                 <div className="text-center">
                   <img 
                     src="/cropped-caiazzo-stemma-250.png" 
@@ -290,14 +290,15 @@ export default function Home() {
                 </div>
                 <div className="text-center">
                   <img 
-                    src="/RGB_Italea_Logo_Payoff_1_Blu.png" 
+                    src="/Logo-Italea-blu.svg" 
                     alt="Logo Italea" 
-                    className="w-52 h-52 object-contain mx-auto"
+                    className="w-14 h-14 object-contain mx-auto mt-4"
                   />
+                  <p className="text-xs text-gray-600 mt-[-12px]">Comune delle Radici</p>
                 </div>
               </div>
               {/* Titolo principale sotto */}
-              <div>
+              <div className="mt-4">
                 <h1 className="text-xl font-bold text-gray-900">Dashboard Admin</h1>
                 <p className="text-sm text-gray-600">Radici - Archivio e Memorie</p>
               </div>
@@ -320,10 +321,11 @@ export default function Home() {
             </div>
             <div className="text-center">
               <img 
-                src="/RGB_Italea_Logo_Payoff_1_Blu.png" 
+                src="/Logo-Italea-blu.svg" 
                 alt="Logo Italea" 
-                className="w-56 h-56 object-contain mx-auto"
+                className="w-16 h-16 object-contain mx-auto"
               />
+              <p className="text-xs text-gray-600 mt-[-15px]">Comune delle Radici</p>
             </div>
           </div>
           
@@ -1339,17 +1341,17 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-white border-t border-gray-200 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex justify-between items-center text-black">
+          <div className="flex flex-col sm:flex-row justify-between items-center text-black gap-2">
             <p>Città di Caiazzo Radici ©</p>
             <p className="text-sm text-black">
               Powered by{' '}
               <a 
-                href="https://cmh.it/" 
+                href="https://shadowcomputer.it/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-blue-500 hover:text-blue-600 hover:underline transition-colors"
               >
-                CMH
+                Shadow Computer
               </a>
             </p>
           </div>
