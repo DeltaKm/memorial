@@ -194,11 +194,10 @@ export default function PublicView() {
                   </div>
                   <div className="text-center">
                     <img 
-                      src="/Logo-Italea-blu.svg" 
+                      src="/comunedelleRadiciItalea.jpeg" 
                       alt="Logo Italea" 
-                      className="w-14 h-14 object-contain mx-auto mt-4"
+                      className="w-44 h-44 object-contain mx-auto mt-4"
                     />
-                    <p className="text-xs text-gray-600 mt-[-12px]">Comune delle Radici</p>
                   </div>
                 </div>
                 {/* Titolo principale sotto */}
@@ -226,11 +225,10 @@ export default function PublicView() {
             </div>
             <div className="text-center">
               <img 
-                src="/Logo-Italea-blu.svg" 
+                src="/comunedelleRadiciItalea.jpeg" 
                 alt="Logo Italea" 
-                className="w-16 h-16 object-contain mx-auto"
+                className="w-44 h-44 object-contain mx-auto"
               />
-              <p className="text-xs text-gray-600 mt-[-15px]">Comune delle Radici</p>
             </div>
           </div>
         </div>
@@ -614,11 +612,10 @@ export default function PublicView() {
                 </DialogTitle>
                 <div className="flex flex-col items-center text-center">
                   <img 
-                    src="/Logo-Italea-blu.svg" 
+                    src="/logoSchedaItalea.jpeg" 
                     alt="Logo Italia" 
-                    className="w-12 h-12 object-contain"
+                    className="w-44 h-44 object-contain"
                   />
-                  <p className="text-xs text-gray-600 mt-[-15px]">Il viaggio verso le tue radici</p>
                 </div>
               </div>
               <DialogTitle className="sm:hidden w-full text-center text-lg font-semibold text-gray-900">
