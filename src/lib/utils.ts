@@ -33,8 +33,8 @@ export function formatRegistroDisplay(
   }
 
   if (anno !== undefined && anno !== null) {
-    return `${anno}-Def.${trimmed}`;
+    return `${anno}-Def. ${trimmed}`;
   }
 
-  return `Def.${trimmed}`;
+  return `Def. ${trimmed}`;
 }

@@ -65,7 +65,7 @@ export default function MaintenancePage() {
         
         {/* Sottotitolo */}
         <h2 className="text-2xl text-gray-600 mb-8">
-          Radici - Archivio e Memorie
+          Radici - Origini e Memoria
         </h2>
         
         {/* Messaggio */}

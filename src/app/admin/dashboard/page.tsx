@@ -299,7 +299,7 @@ export default function Home() {
               {/* Titolo principale sotto */}
               <div className="mt-4">
                 <h1 className="text-xl font-bold text-gray-900">Dashboard Admin</h1>
-                <p className="text-sm text-gray-600">Radici - Archivio e Memorie</p>
+                <p className="text-sm text-gray-600">Radici - Origini e Memoria</p>
               </div>
             </div>
           </div>
@@ -316,7 +316,7 @@ export default function Home() {
             </div>
             <div className="text-center">
               <h1 className="text-3xl font-bold text-gray-900">Dashboard Admin</h1>
-              <p className="text-gray-600 mt-1">Radici - Archivio e Memorie</p>
+              <p className="text-gray-600 mt-1">Radici - Origini e Memoria</p>
             </div>
             <div className="text-center">
               <img 

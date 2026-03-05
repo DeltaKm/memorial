@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Radici - Archivio e Memorie",
-  description: "Archivio e Memorie",
+  title: "Radici - Origini e Memoria",
+  description: "Origini e Memoria",
   icons: {
     icon: "/cropped-caiazzo-stemma-250.png",
     shortcut: "/cropped-caiazzo-stemma-250.png",

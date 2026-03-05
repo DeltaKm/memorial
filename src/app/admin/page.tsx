@@ -126,7 +126,7 @@ export default function AdminLogin() {
                 ← Torna alla vista pubblica
               </a>
               <div className="mt-4 pt-4 border-t border-gray-200">
-                <p className="text-xs text-gray-500">Radici - Archivio e Memorie</p>
+                <p className="text-xs text-gray-500">Radici - Origini e Memoria</p>
                 <p className="text-xs text-gray-400 mt-1">
                   Powered by{' '}
                   <a 
