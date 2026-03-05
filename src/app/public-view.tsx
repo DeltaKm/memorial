@@ -190,13 +190,13 @@ export default function PublicView() {
                       alt="Stemma Caiazzo" 
                       className="w-14 h-14 object-contain mx-auto"
                     />
-                    <p className="text-xs text-gray-600 mt-1">Città di Caiazzo</p>
+                    <p className="text-xs text-gray-600 font-bold mt-1">Città di Caiazzo</p>
                   </div>
                   <div className="text-center">
                     <img 
-                      src="/comunedelleRadiciItalea.jpeg" 
+                      src="/comune-delle-radici-regular.svg" 
                       alt="Logo Italea" 
-                      className="w-44 h-44 object-contain mx-auto mt-4"
+                      className="w-22 h-22 object-contain mx-auto mt-4"
                     />
                   </div>
                 </div>
@@ -217,7 +217,7 @@ export default function PublicView() {
                 alt="Stemma Caiazzo" 
                 className="w-16 h-16 object-contain mx-auto"
               />
-              <p className="text-xs text-gray-600 mt-1">Città di Caiazzo</p>
+              <p className="text-xs text-gray-600 font-bold mt-1">Città di Caiazzo</p>
             </div>
             <div className="text-center">
               <h1 className="text-3xl font-bold text-gray-900">Radici</h1>
@@ -225,9 +225,9 @@ export default function PublicView() {
             </div>
             <div className="text-center">
               <img 
-                src="/comunedelleRadiciItalea.jpeg" 
+                src="/comune-delle-radici-regular.svg" 
                 alt="Logo Italea" 
-                className="w-44 h-44 object-contain mx-auto"
+                className="w-32 h-32 object-contain mx-auto"
               />
             </div>
           </div>
@@ -487,6 +487,16 @@ export default function PublicView() {
                       <Button
                         variant="outline"
                         size="sm"
+                        onClick={() => setCurrentPage(1)}
+                        disabled={currentPage === 1}
+                        className="flex items-center gap-2 h-10 border text-gray-700 border-gray-300 hover:bg-gray-600 hover:text-white hover:border-gray-600 disabled:opacity-50"
+                      >
+                        Inizio
+                      </Button>
+
+                      <Button
+                        variant="outline"
+                        size="sm"
                         onClick={() => {
                           if (currentPage === 1) return;
                           setCurrentPage(currentPage - 1);
@@ -584,6 +594,16 @@ export default function PublicView() {
                         Successiva
                         <ChevronRight className="w-4 h-4" />
                       </Button>
+
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setCurrentPage(totalPages)}
+                        disabled={currentPage === totalPages}
+                        className="flex items-center gap-2 h-10 border text-gray-700 border-gray-300 hover:bg-gray-600 hover:text-white hover:border-gray-600 disabled:opacity-50"
+                      >
+                        Fine
+                      </Button>
                     </div>
                   </div>
                 )}
@@ -605,7 +625,7 @@ export default function PublicView() {
                     alt="Stemma Comune di Caiazzo" 
                     className="w-12 h-12 object-contain"
                   />
-                  <p className="text-xs font-medium text-gray-600 mt-0.5">Città di Caiazzo</p>
+                  <p className="text-xs text-gray-600 font-bold mt-0.5">Città di Caiazzo</p>
                 </div>
                 <DialogTitle className="hidden sm:block w-full text-center text-lg sm:text-xl font-semibold text-gray-900 px-2 whitespace-nowrap">
                   Scheda - {selectedPersona?.nome} {selectedPersona?.cognome}
@@ -755,7 +775,7 @@ export default function PublicView() {
       <footer className="bg-white border-t border-gray-200 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col sm:flex-row justify-between items-center text-black gap-2">
-            <p>Città di Caiazzo Radici ©</p>
+            <p className="text-gray-600 font-bold">Città di Caiazzo Radici ©</p>
             <p className="text-sm text-black">
               Powered by{' '}
               <a 
