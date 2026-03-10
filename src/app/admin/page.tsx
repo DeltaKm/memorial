@@ -130,12 +130,12 @@ export default function AdminLogin() {
                 <p className="text-xs text-gray-400 mt-1">
                   Powered by{' '}
                   <a 
-                    href="https://cmh.it/" 
+                    href="https://shadowcomputer.it/" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-gray-700 hover:text-gray-900 hover:underline"
                   >
-                    CMH
+                    Shadow Computer
                   </a>
                 </p>
               </div>

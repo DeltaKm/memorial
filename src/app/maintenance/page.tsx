@@ -114,12 +114,12 @@ export default function MaintenancePage() {
             <div className="text-xs text-gray-500 border-t border-gray-200 pt-4">
               Powered by{' '}
               <a 
-                href="https://cmh.it/" 
+                href="https://shadowcomputer.it/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-700 hover:text-gray-900 hover:underline"
               >
-                CMH
+                Shadow Computer
               </a>
             </div>
           </CardContent>
