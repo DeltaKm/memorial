@@ -628,8 +628,8 @@ export default function PublicView() {
         <DialogContent className="w-full max-w-[95vw] sm:max-w-3xl max-h-[90vh] overflow-y-auto select-none rounded-2xl custom-scroll">
           <DialogHeader className="pb-2">
             <div className="flex flex-col gap-3">
-              <div className="flex flex-col sm:grid sm:grid-cols-3 items-center gap-3 sm:gap-4">
-                <div className="flex flex-col items-center text-center">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-0">
+                <div className="flex flex-col items-center text-center sm:-mr-6">
                   <img 
                     src="/cropped-caiazzo-stemma-250.png" 
                     alt="Stemma Comune di Caiazzo" 
@@ -637,10 +637,11 @@ export default function PublicView() {
                   />
                   <p className="text-xs text-gray-600 font-bold mt-0.5">Città di Caiazzo</p>
                 </div>
-                <DialogTitle className="hidden sm:block w-full text-center text-lg sm:text-xl font-semibold text-gray-900 px-2 whitespace-nowrap">
-                  Scheda - {selectedPersona?.nome} {selectedPersona?.cognome}
+                <DialogTitle className="hidden sm:flex flex-col gap-0 text-center text-lg sm:text-xl leading-tight text-gray-900 px-0">
+                  <span className="block font-semibold">Scheda</span>
+                  <span className="block font-normal">{selectedPersona?.nome} {selectedPersona?.cognome}</span>
                 </DialogTitle>
-                <div className="flex flex-col items-center text-center">
+                <div className="flex flex-col items-center text-center sm:-ml-6">
                   <img 
                     src="/logoSchedaItalea.jpeg" 
                     alt="Logo Italia" 
@@ -648,8 +649,9 @@ export default function PublicView() {
                   />
                 </div>
               </div>
-              <DialogTitle className="sm:hidden w-full text-center text-lg font-semibold text-gray-900">
-                Scheda - {selectedPersona?.nome} {selectedPersona?.cognome}
+              <DialogTitle className="sm:hidden w-full text-center text-lg leading-tight text-gray-900">
+                <span className="block font-semibold">Scheda</span>
+                <span className="block font-normal">{selectedPersona?.nome} {selectedPersona?.cognome}</span>
               </DialogTitle>
             </div>
           </DialogHeader>
@@ -666,7 +668,8 @@ export default function PublicView() {
                   <div>
                     <Label className="text-sm font-medium text-gray-600">Nome - Cognome</Label>
                     <p className="text-lg font-semibold text-gray-900 mt-1">
-                      {selectedPersona.nome} {selectedPersona.cognome}
+                      <span className="block">{selectedPersona.nome}</span>
+                      <span className="block">{selectedPersona.cognome}</span>
                     </p>
                   </div>
 
