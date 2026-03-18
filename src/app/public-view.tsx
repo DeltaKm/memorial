@@ -658,7 +658,7 @@ export default function PublicView() {
           
           {selectedPersona && (
             <div className="space-y-4 sm:space-y-6 px-2 sm:px-0">
-              {/* Informazioni Personali */}
+              {/* Informazioni Personal */}
               <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-4 sm:p-6 rounded-lg border border-gray-200">
                 <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <User className="w-5 h-5" />
