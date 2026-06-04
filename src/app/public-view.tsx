@@ -788,7 +788,17 @@ export default function PublicView() {
       <footer className="bg-white border-t border-gray-200 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col sm:flex-row justify-between items-center text-black gap-2">
-            <p className="text-gray-600 font-bold">Città di Caiazzo Radici ©</p>
+            <p className="text-gray-600 font-bold">
+              Città di Caiazzo Radici ©{' '}
+              <a 
+                href="https://palazzomazziotti.comunedicaiazzo.it/privacy/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:text-blue-600 hover:underline transition-colors"
+              >
+                Privacy
+              </a>
+            </p>
             <p className="text-sm text-black">
               Powered by{' '}
               <a 
