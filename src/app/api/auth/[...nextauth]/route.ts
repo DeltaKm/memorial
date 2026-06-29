@@ -11,16 +11,31 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' }
       },
       async authorize(credentials) {
-        // Simple hardcoded credentials - in production use environment variables
-        const adminUsername = process.env.ADMIN_USERNAME;
-        const adminPassword = process.env.ADMIN_PASSWORD;
-        
-        if (
-          credentials?.username === adminUsername &&
-          credentials?.password === adminPassword
-        ) {
+        // Build list of admin accounts from env vars
+        // Supports ADMIN_USERNAME / ADMIN_PASSWORD (legacy) plus
+        // ADMIN_USERNAME_2 / ADMIN_PASSWORD_2, ADMIN_USERNAME_3 / ADMIN_PASSWORD_3, etc.
+        const admins: { username: string; password: string }[] = [];
+
+        if (process.env.ADMIN_USERNAME && process.env.ADMIN_PASSWORD) {
+          admins.push({ username: process.env.ADMIN_USERNAME, password: process.env.ADMIN_PASSWORD });
+        }
+
+        let index = 2;
+        while (process.env[`ADMIN_USERNAME_${index}`] && process.env[`ADMIN_PASSWORD_${index}`]) {
+          admins.push({
+            username: process.env[`ADMIN_USERNAME_${index}`] as string,
+            password: process.env[`ADMIN_PASSWORD_${index}`] as string,
+          });
+          index++;
+        }
+
+        const match = admins.find(
+          (a) => a.username === credentials?.username && a.password === credentials?.password
+        );
+
+        if (match) {
           return {
-            id: '1',
+            id: String(admins.indexOf(match) + 1),
             name: 'Admin',
             email: 'admin@memorial.com',
           };
